@@ -4,59 +4,175 @@
 <meta charset="UTF-8">
 <title>DioRise • Hytale</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 :root{
-  --bg:#0f1b1f; --bg2:#0b1418;
-  --panel:#1f343a; --panel2:#17292e;
-  --line:#2e555f; --accent:#4da3ff;
-  --gold:#e8c15a; --text:#e3f4f6;
+  --glass: rgba(20,40,70,.55);
+  --glass-border: rgba(255,255,255,.18);
+  --accent:#4da3ff;
+  --accent-soft:#7bbdff;
+  --gold:#f2c94c;
+  --text:#eaf6ff;
 }
+
 *{box-sizing:border-box;font-family:Segoe UI,Arial}
+
 body{
   margin:0;
-  background:
-    radial-gradient(900px 500px at 10% -10%,#2f5f67,transparent),
-    radial-gradient(700px 400px at 90% 10%,#2f6f5c,transparent),
-    linear-gradient(180deg,var(--bg),var(--bg2));
+  min-height:100vh;
+  background:linear-gradient(180deg,#8fc8ff,#5fa8ff,#3b78c8);
   color:var(--text);
 }
 
 /* LOGIN */
-#login{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:1000}
-#loginBox{background:linear-gradient(180deg,var(--panel),var(--panel2));padding:20px;border-radius:16px;width:280px}
-#loginBox input{width:100%;padding:10px;border-radius:8px;border:none;margin-bottom:10px}
+#login{
+  position:fixed; inset:0;
+  background:rgba(0,0,0,.75);
+  display:flex; align-items:center; justify-content:center;
+  z-index:1000;
+}
+#loginBox{
+  background:var(--glass);
+  backdrop-filter:blur(14px);
+  border:1px solid var(--glass-border);
+  border-radius:16px;
+  padding:20px;
+  width:280px;
+}
+#loginBox input{
+  width:100%; padding:10px;
+  border-radius:8px; border:none;
+  margin-bottom:10px;
+}
 
 /* HEADER */
-.header{display:flex;justify-content:space-between;padding:12px 18px;background:#182d32;border-bottom:1px solid var(--line);font-weight:700}
+.header{
+  display:flex; justify-content:space-between;
+  padding:12px 18px;
+  background:var(--glass);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--glass-border);
+  font-weight:700;
+}
 
 /* LEVEL */
-.levelbar{padding:10px 18px;background:#0c191d}
-.bar{height:12px;background:#081417;border-radius:6px;overflow:hidden}
-.bar span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#6fb3aa)}
+.levelbar{
+  margin:12px;
+  padding:10px 18px;
+  background:var(--glass);
+  backdrop-filter:blur(14px);
+  border:1px solid var(--glass-border);
+  border-radius:16px;
+}
+.bar{
+  height:12px;
+  background:rgba(0,0,0,.3);
+  border-radius:6px;
+  overflow:hidden;
+}
+.bar span{
+  display:block; height:100%;
+  background:linear-gradient(90deg,var(--accent-soft),var(--accent));
+}
 
 /* LAYOUT */
-.app{display:grid;grid-template-columns:260px 1fr 260px;gap:16px;padding:16px}
-.panel{background:linear-gradient(180deg,var(--panel),var(--panel2));border-radius:16px;padding:12px;border:1px solid #203f45}
-.item{display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,.25);padding:8px 10px;border-radius:10px;margin-bottom:8px}
+.app{
+  display:grid;
+  grid-template-columns:260px 1fr 260px;
+  gap:16px;
+  padding:16px;
+}
+
+/* PANELS */
+.panel{
+  background:var(--glass);
+  backdrop-filter:blur(14px);
+  border:1px solid var(--glass-border);
+  border-radius:18px;
+  padding:14px;
+}
+
+.item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(0,0,0,.25);
+  padding:8px 10px;
+  border-radius:12px;
+  margin-bottom:8px;
+}
 
 /* CENTER */
-.center{display:flex;flex-direction:column;align-items:center;gap:16px}
-.core{width:240px;height:240px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#a7d7cf,#4e9f95);box-shadow:0 0 40px rgba(143,209,199,.7);display:flex;align-items:center;justify-content:center;font-size:54px}
-.main-btn{background:linear-gradient(180deg,#4da3ff,#2f6fd4);color:#fff;padding:18px 60px;font-size:28px;border-radius:32px;border:none;font-weight:900;cursor:pointer}
+.center{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+}
+.core{
+  width:240px; height:240px;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,#9fd6ff,#3a7bd5);
+  box-shadow:0 0 0 8px rgba(255,255,255,.08),0 30px 80px rgba(0,0,0,.45);
+  display:flex; align-items:center; justify-content:center;
+  font-size:54px;
+}
+.main-btn{
+  background:linear-gradient(180deg,#6bb6ff,#2f6fd4);
+  color:#fff;
+  padding:18px 60px;
+  font-size:28px;
+  border-radius:32px;
+  border:none;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
 
 /* BUTTON */
-button{background:#f1f5f9;border:none;border-radius:8px;font-weight:800;padding:6px 14px;cursor:pointer}
+button{
+  background:rgba(255,255,255,.95);
+  border:none;
+  border-radius:10px;
+  font-weight:800;
+  padding:6px 14px;
+  cursor:pointer;
+  color:#1a2a44;
+}
 
 /* BOTTOM */
-.bottom{position:fixed;left:0;right:0;bottom:0;background:#13262b;border-top:1px solid var(--line);padding:8px;display:flex;justify-content:space-between;align-items:center}
-.bottom-left{display:flex;gap:10px}
+.bottom{
+  position:fixed; left:0; right:0; bottom:0;
+  background:var(--glass);
+  backdrop-filter:blur(14px);
+  border-top:1px solid var(--glass-border);
+  padding:8px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.bottom-left{display:flex; gap:10px}
 
 /* LEADERS */
-#leaders{position:fixed;right:10px;bottom:60px;width:260px;background:linear-gradient(180deg,var(--panel),var(--panel2));border-radius:14px;border:1px solid #203f45;padding:10px;display:none}
+#leaders{
+  position:fixed;
+  right:10px; bottom:60px;
+  width:260px;
+  background:var(--glass);
+  backdrop-filter:blur(14px);
+  border:1px solid var(--glass-border);
+  border-radius:16px;
+  padding:10px;
+  display:none;
+}
 #leaders.active{display:block}
 
 /* FLOAT */
-.float{position:absolute;color:var(--gold);font-weight:900;pointer-events:none;animation:float 1s forwards}
+.float{
+  position:absolute;
+  color:var(--gold);
+  font-weight:900;
+  pointer-events:none;
+  animation:float 1s forwards;
+}
 @keyframes float{to{transform:translateY(-50px);opacity:0}}
 </style>
 </head>
@@ -119,40 +235,33 @@ button{background:#f1f5f9;border:none;border-radius:8px;font-weight:800;padding:
 </div>
 
 <script>
-/* ========= DEFAULT STATE ========= */
-const DEFAULT_STATE = {
-  gold:0, level:1, xp:0, xpNeed:100, perSec:0,
+/* ===== DEFAULT STATE ===== */
+const DEFAULT_STATE={
+  gold:0,level:1,xp:0,xpNeed:100,perSec:0,
   stats:{str:1,agi:1,int:1,luck:1},
-  prices:{str:70,agi:70,int:70,luck:90,auto1:250,auto5:1200,click:300,boost:800,chest:200}
+  prices:{str:50,agi:50,int:70,luck:90,auto1:250,auto5:1200,click:300,boost:800,chest:200}
 };
-
-let nick=null;
 let state=JSON.parse(JSON.stringify(DEFAULT_STATE));
+let nick=null;
 const LEADERS_KEY="diorise_leaders";
 
-/* ========= LOGIN ========= */
+/* LOGIN */
 function startGame(){
-  const n=nickInput.value.trim();
-  if(!n) return;
-  nick=n;
+  nick=nickInput.value.trim();
+  if(!nick) return;
   nickLabel.textContent=nick;
   login.style.display="none";
-  safeLoad();
+  load();
   render();
 }
 
-/* ========= SAVE / LOAD ========= */
+/* SAVE / LOAD */
 const saveKey=()=>`diorise_${nick}`;
-function safeLoad(){
+function load(){
   const raw=localStorage.getItem(saveKey());
   if(!raw) return;
-  try{
-    const d=JSON.parse(raw);
-    state={...DEFAULT_STATE,...d,
-      stats:{...DEFAULT_STATE.stats,...d.stats},
-      prices:{...DEFAULT_STATE.prices,...d.prices}
-    };
-  }catch{}
+  const d=JSON.parse(raw);
+  state={...state,...d,stats:{...state.stats,...d.stats},prices:{...state.prices,...d.prices}};
 }
 function save(){
   localStorage.setItem(saveKey(),JSON.stringify(state));
@@ -161,7 +270,7 @@ function save(){
   localStorage.setItem(LEADERS_KEY,JSON.stringify(lb));
 }
 
-/* ========= RENDER ========= */
+/* RENDER */
 const bonus=()=>1+(state.level-1)*0.03;
 function render(){
   gold.textContent=Math.floor(state.gold);
@@ -179,11 +288,10 @@ function render(){
   c_click.textContent=Math.floor(state.prices.click);
   c_boost.textContent=Math.floor(state.prices.boost);
   c_chest.textContent=Math.floor(state.prices.chest);
-
   save();
 }
 
-/* ========= GAMEPLAY ========= */
+/* GAMEPLAY */
 function gainXP(v){
   state.xp+=v;
   while(state.xp>=state.xpNeed){
@@ -206,7 +314,7 @@ function buyClick(){if(state.gold<state.prices.click)return;state.gold-=state.pr
 function buyBoost(){if(state.gold<state.prices.boost)return;state.gold-=state.prices.boost;state.stats.int++;state.prices.boost*=1.7;render();}
 function openChest(){if(state.gold<state.prices.chest)return;state.gold-=state.prices.chest;const r=100+Math.random()*250;state.gold+=r;gainXP(30);state.prices.chest*=1.6;render();}
 
-/* ========= LEADERS ========= */
+/* LEADERS */
 function toggleLeaders(){leaders.classList.toggle("active");renderLeaders();}
 function renderLeaders(){
   const lb=JSON.parse(localStorage.getItem(LEADERS_KEY)||"{}");
@@ -217,7 +325,7 @@ function renderLeaders(){
     .join("<br>")||"Пусто";
 }
 
-/* ========= PASSIVE ========= */
+/* PASSIVE */
 setInterval(()=>{
   if(!nick) return;
   if(state.perSec>0){
@@ -227,11 +335,12 @@ setInterval(()=>{
   }
 },1000);
 
-/* ========= FLOAT ========= */
+/* FLOAT */
 function spawn(x,y,t){
   const f=document.createElement("div");
   f.className="float";
-  f.style.left=x+"px"; f.style.top=y+"px";
+  f.style.left=x+"px";
+  f.style.top=y+"px";
   f.textContent=t;
   document.body.appendChild(f);
   setTimeout(()=>f.remove(),1000);
