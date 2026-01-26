@@ -1,350 +1,1199 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>DioRise • Hytale</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-:root{
-  --glass: rgba(20,40,70,.55);
-  --glass-border: rgba(255,255,255,.18);
-  --accent:#4da3ff;
-  --accent-soft:#7bbdff;
-  --gold:#f2c94c;
-  --text:#eaf6ff;
-}
-
-*{box-sizing:border-box;font-family:Segoe UI,Arial}
-
-body{
-  margin:0;
-  min-height:100vh;
-  background:linear-gradient(180deg,#8fc8ff,#5fa8ff,#3b78c8);
-  color:var(--text);
-}
-
-/* LOGIN */
-#login{
-  position:fixed; inset:0;
-  background:rgba(0,0,0,.75);
-  display:flex; align-items:center; justify-content:center;
-  z-index:1000;
-}
-#loginBox{
-  background:var(--glass);
-  backdrop-filter:blur(14px);
-  border:1px solid var(--glass-border);
-  border-radius:16px;
-  padding:20px;
-  width:280px;
-}
-#loginBox input{
-  width:100%; padding:10px;
-  border-radius:8px; border:none;
-  margin-bottom:10px;
-}
-
-/* HEADER */
-.header{
-  display:flex; justify-content:space-between;
-  padding:12px 18px;
-  background:var(--glass);
-  backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--glass-border);
-  font-weight:700;
-}
-
-/* LEVEL */
-.levelbar{
-  margin:12px;
-  padding:10px 18px;
-  background:var(--glass);
-  backdrop-filter:blur(14px);
-  border:1px solid var(--glass-border);
-  border-radius:16px;
-}
-.bar{
-  height:12px;
-  background:rgba(0,0,0,.3);
-  border-radius:6px;
-  overflow:hidden;
-}
-.bar span{
-  display:block; height:100%;
-  background:linear-gradient(90deg,var(--accent-soft),var(--accent));
-}
-
-/* LAYOUT */
-.app{
-  display:grid;
-  grid-template-columns:260px 1fr 260px;
-  gap:16px;
-  padding:16px;
-}
-
-/* PANELS */
-.panel{
-  background:var(--glass);
-  backdrop-filter:blur(14px);
-  border:1px solid var(--glass-border);
-  border-radius:18px;
-  padding:14px;
-}
-
-.item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  background:rgba(0,0,0,.25);
-  padding:8px 10px;
-  border-radius:12px;
-  margin-bottom:8px;
-}
-
-/* CENTER */
-.center{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:16px;
-}
-.core{
-  width:240px; height:240px;
-  border-radius:50%;
-  background:radial-gradient(circle at 30% 30%,#9fd6ff,#3a7bd5);
-  box-shadow:0 0 0 8px rgba(255,255,255,.08),0 30px 80px rgba(0,0,0,.45);
-  display:flex; align-items:center; justify-content:center;
-  font-size:54px;
-}
-.main-btn{
-  background:linear-gradient(180deg,#6bb6ff,#2f6fd4);
-  color:#fff;
-  padding:18px 60px;
-  font-size:28px;
-  border-radius:32px;
-  border:none;
-  font-weight:900;
-  cursor:pointer;
-  box-shadow:0 10px 30px rgba(0,0,0,.4);
-}
-
-/* BUTTON */
-button{
-  background:rgba(255,255,255,.95);
-  border:none;
-  border-radius:10px;
-  font-weight:800;
-  padding:6px 14px;
-  cursor:pointer;
-  color:#1a2a44;
-}
-
-/* BOTTOM */
-.bottom{
-  position:fixed; left:0; right:0; bottom:0;
-  background:var(--glass);
-  backdrop-filter:blur(14px);
-  border-top:1px solid var(--glass-border);
-  padding:8px;
-  display:flex; justify-content:space-between; align-items:center;
-}
-.bottom-left{display:flex; gap:10px}
-
-/* LEADERS */
-#leaders{
-  position:fixed;
-  right:10px; bottom:60px;
-  width:260px;
-  background:var(--glass);
-  backdrop-filter:blur(14px);
-  border:1px solid var(--glass-border);
-  border-radius:16px;
-  padding:10px;
-  display:none;
-}
-#leaders.active{display:block}
-
-/* FLOAT */
-.float{
-  position:absolute;
-  color:var(--gold);
-  font-weight:900;
-  pointer-events:none;
-  animation:float 1s forwards;
-}
-@keyframes float{to{transform:translateY(-50px);opacity:0}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DioRise • DioClicker (v2)</title>
+  <meta name="description" content="DioClicker — автокликер с прокачкой, престижем, квестами, достижениями и оффлайн-прогрессом." />
+  <style>
+    :root{
+      --bg0:#071423; --bg1:#0a1e33; --bg2:#0e2b47;
+      --stroke: rgba(255,255,255,.12); --stroke2: rgba(255,255,255,.18);
+      --text: rgba(238,248,255,.92); --muted: rgba(238,248,255,.64);
+      --accent:#5cc8ff; --accent2:#74ffcb; --warn:#ffcc66; --bad:#ff6b7d; --good:#67ff9e;
+      --shadow: 0 16px 50px rgba(0,0,0,.35); --shadow2: 0 10px 25px rgba(0,0,0,.25);
+      --r20: 20px; --glass: blur(14px);
+      --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      --scale: 1;
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0; font-family: var(--font); color: var(--text);
+      background:
+        radial-gradient(1200px 800px at 10% 10%, rgba(92,200,255,.16), transparent 55%),
+        radial-gradient(900px 600px at 85% 20%, rgba(116,255,203,.14), transparent 55%),
+        radial-gradient(1000px 700px at 50% 110%, rgba(255,204,102,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1) 40%, var(--bg2));
+      overflow-x:hidden;
+    }
+    .grain{
+      pointer-events:none; position:fixed; inset:-20%; opacity:.22;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.40'/%3E%3C/svg%3E");
+      mix-blend-mode:overlay; transform: translateZ(0); animation: grainMove 9s steps(6) infinite;
+    }
+    @keyframes grainMove{
+      0%{ transform: translate3d(-3%, -2%, 0) scale(1); }
+      20%{ transform: translate3d(2%, -1%, 0) scale(1.02); }
+      40%{ transform: translate3d(1%, 3%, 0) scale(1.01); }
+      60%{ transform: translate3d(-2%, 2%, 0) scale(1.02); }
+      80%{ transform: translate3d(-1%, -3%, 0) scale(1.01); }
+      100%{ transform: translate3d(-3%, -2%, 0) scale(1); }
+    }
+    .wrap{ max-width:1240px; margin:0 auto; padding:22px 18px 80px; transform:scale(var(--scale)); transform-origin: top center; }
+    header.top{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      padding:18px 18px; border-radius: var(--r20);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border: 1px solid var(--stroke); backdrop-filter: var(--glass);
+      box-shadow: var(--shadow2); position: sticky; top: 10px; z-index: 50;
+    }
+    .brand{ display:flex; align-items:center; gap:12px; min-width:260px; }
+    .logo{
+      width:38px; height:38px; border-radius:12px; position:relative; overflow:hidden;
+      background:
+        radial-gradient(18px 18px at 30% 35%, rgba(255,255,255,.35), transparent 60%),
+        linear-gradient(135deg, rgba(92,200,255,.95), rgba(116,255,203,.80));
+      box-shadow: 0 10px 20px rgba(92,200,255,.18), 0 10px 20px rgba(116,255,203,.10);
+      border: 1px solid rgba(255,255,255,.22);
+    }
+    .logo::after{
+      content:""; position:absolute; inset:-50%;
+      background: conic-gradient(from 180deg, rgba(255,255,255,0), rgba(255,255,255,.25), rgba(255,255,255,0));
+      animation: spin 5.8s linear infinite; opacity:.45;
+    }
+    @keyframes spin{ to{ transform: rotate(360deg); } }
+    .brand h1{ margin:0; font-size:14px; letter-spacing:.3px; line-height:1.15; font-weight:780; }
+    .brand .sub{ margin-top:2px; font-size:12px; color: var(--muted); letter-spacing:.2px; }
+    .rightTop{ display:flex; align-items:center; justify-content:flex-end; gap:10px; flex:1; }
+    .pill{
+      display:flex; align-items:center; gap:8px; padding:9px 12px; border-radius:999px;
+      border: 1px solid var(--stroke); background: rgba(255,255,255,.05);
+      backdrop-filter: var(--glass); box-shadow: 0 6px 15px rgba(0,0,0,.12);
+      font-size:12px; color: var(--muted); white-space:nowrap;
+    }
+    .pill strong{ color: var(--text); font-weight:760; letter-spacing:.2px; }
+    .dot{ width:8px; height:8px; border-radius:99px; background: var(--good); box-shadow: 0 0 0 4px rgba(103,255,158,.12); }
+    .dot.off{ background: rgba(238,248,255,.35); box-shadow:none; }
+    .btn{
+      appearance:none; border:0; color: var(--text); background: rgba(255,255,255,.06);
+      border: 1px solid var(--stroke); border-radius: 14px; padding: 10px 12px;
+      font-weight: 680; font-size: 12px; letter-spacing:.2px; cursor:pointer; user-select:none;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease, opacity .15s ease;
+      box-shadow: 0 10px 20px rgba(0,0,0,.18); backdrop-filter: var(--glass);
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .btn:hover{ background: rgba(255,255,255,.085); border-color: var(--stroke2); transform: translateY(-1px); }
+    .btn:active{ transform: translateY(0px) scale(.99); }
+    .btn:disabled{ opacity:.45; cursor:not-allowed; box-shadow:none; }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(92,200,255,.85), rgba(116,255,203,.68));
+      border-color: rgba(255,255,255,.25);
+      color: rgba(3,12,20,.92);
+      box-shadow: 0 16px 30px rgba(92,200,255,.18), 0 16px 30px rgba(116,255,203,.10);
+    }
+    .btn.bad{ background: rgba(255,107,125,.14); border-color: rgba(255,107,125,.25); }
+    .btn.ghost{ background: rgba(255,255,255,.03); box-shadow:none; }
+    .icon{
+      width:16px; height:16px; display:inline-grid; place-items:center; border-radius: 6px;
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+      color: rgba(238,248,255,.92); font-weight: 900; font-size: 12px; line-height: 1;
+    }
+    .btn.primary .icon{ background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.22); }
+    .navRow{ margin-top:14px; display:flex; gap:10px; align-items:center; justify-content:space-between; }
+    .tabs{ display:flex; gap:8px; flex-wrap:wrap; }
+    .tab{
+      padding: 10px 12px; border-radius: 14px; border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.04); color: var(--muted); cursor:pointer; user-select:none;
+      font-weight: 720; letter-spacing:.2px; font-size: 12px;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease, color .15s ease;
+    }
+    .tab:hover{ background: rgba(255,255,255,.06); border-color: var(--stroke2); transform: translateY(-1px); }
+    .tab.active{
+      background: rgba(255,255,255,.09); border-color: rgba(92,200,255,.35);
+      color: var(--text); box-shadow: 0 12px 24px rgba(0,0,0,.16);
+    }
+    .grid{ margin-top:12px; display:grid; grid-template-columns: 1.15fr .85fr; gap:12px; align-items:start; }
+    @media (max-width: 980px){
+      .brand{ min-width: 200px; }
+      .grid{ grid-template-columns: 1fr; }
+      header.top{ position:relative; top:auto; }
+    }
+    .card{
+      border-radius: var(--r20);
+      background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035));
+      border: 1px solid var(--stroke); box-shadow: var(--shadow); backdrop-filter: var(--glass); overflow:hidden;
+    }
+    .card .hd{
+      display:flex; align-items:center; justify-content:space-between; padding: 16px 16px 12px; gap:12px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .hd .title{ display:flex; align-items:center; gap:10px; }
+    .hd .title h2{ margin:0; font-size: 13px; letter-spacing:.25px; font-weight: 840; }
+    .hd .title .meta{ font-size: 12px; color: var(--muted); margin-top: 2px; letter-spacing:.15px; }
+    .body{ padding: 14px 16px 16px; }
+    .bigRow{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 520px){ .bigRow{ grid-template-columns:1fr; } }
+    .statBox{
+      border-radius: 18px; background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.10);
+      padding: 12px 12px; box-shadow: 0 12px 26px rgba(0,0,0,.14); position:relative; overflow:hidden;
+    }
+    .statBox::after{
+      content:""; position:absolute; inset:-30%;
+      background: radial-gradient(closest-side at 35% 25%, rgba(92,200,255,.14), transparent 65%);
+      opacity:.8; pointer-events:none;
+    }
+    .statBox .k{ color: var(--muted); font-size: 11px; letter-spacing:.15px; }
+    .statBox .v{ margin-top:6px; font-size: 18px; font-weight: 900; letter-spacing:.2px; }
+    .statBox .s{ margin-top: 4px; color: rgba(238,248,255,.72); font-size: 11px; }
+    .bar{
+      height: 12px; border-radius: 999px; background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12); overflow:hidden; box-shadow: inset 0 0 0 1px rgba(0,0,0,.08);
+    }
+    .bar > i{
+      display:block; height:100%; width:0%;
+      background: linear-gradient(90deg, rgba(92,200,255,.92), rgba(116,255,203,.85));
+      border-radius: 999px; box-shadow: 0 10px 18px rgba(92,200,255,.20);
+      transition: width .25s ease;
+    }
+    .arena{ margin-top:12px; display:grid; grid-template-columns: 1fr; gap: 12px; }
+    .clickZone{
+      position:relative; border-radius: var(--r20); overflow:hidden; min-height: 280px; user-select:none;
+      background:
+        radial-gradient(600px 360px at 25% 25%, rgba(92,200,255,.14), transparent 60%),
+        radial-gradient(500px 340px at 80% 35%, rgba(116,255,203,.12), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+    }
+    .clickHud{ display:flex; align-items:flex-end; justify-content:space-between; gap:12px; padding: 14px 14px 0; }
+    .hudLeft{ display:flex; flex-direction:column; gap:8px; min-width:240px; }
+    .hudRight{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+    .mini{
+      padding: 8px 10px; border-radius: 14px; border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04); color: var(--muted); font-size: 12px; letter-spacing:.15px;
+      display:flex; align-items:center; gap: 8px; box-shadow: 0 10px 20px rgba(0,0,0,.14);
+    }
+    .mini strong{ color: var(--text); font-weight: 880; }
+    .targetWrap{ height: 240px; display:grid; place-items:center; padding: 12px; position:relative; }
+    .target{
+      width:160px; height:160px; border-radius:999px; border: 1px solid rgba(255,255,255,.18);
+      background:
+        radial-gradient(closest-side at 30% 30%, rgba(255,255,255,.18), rgba(255,255,255,.04) 55%, rgba(0,0,0,.15)),
+        radial-gradient(closest-side at 65% 60%, rgba(92,200,255,.16), transparent 62%),
+        radial-gradient(closest-side at 55% 55%, rgba(116,255,203,.10), transparent 66%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow: 0 35px 80px rgba(0,0,0,.35), 0 10px 22px rgba(0,0,0,.28), inset 0 0 0 1px rgba(255,255,255,.10);
+      position:relative; cursor:pointer; transition: transform .08s ease, filter .15s ease; outline: none;
+      display:grid; place-items:center;
+    }
+    .target:active{ transform: scale(.985); }
+    .target:focus-visible{ box-shadow: 0 35px 80px rgba(0,0,0,.35), 0 10px 22px rgba(0,0,0,.28), 0 0 0 4px rgba(92,200,255,.22); }
+    .target .ring{ position:absolute; inset: 10px; border-radius: 999px; border: 1px dashed rgba(255,255,255,.18); opacity:.9; animation: ring 7s linear infinite; }
+    @keyframes ring{ to{ transform: rotate(360deg); } }
+    .target .core{
+      width:66px; height:66px; border-radius:999px; border: 1px solid rgba(255,255,255,.20);
+      background: linear-gradient(135deg, rgba(92,200,255,.88), rgba(116,255,203,.70));
+      box-shadow: 0 12px 20px rgba(92,200,255,.18), 0 12px 20px rgba(116,255,203,.10);
+      display:grid; place-items:center; color: rgba(3,12,20,.90); font-weight: 1000; letter-spacing:.2px;
+    }
+    .targetHint{
+      position:absolute; left:14px; right:14px; bottom: 12px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      color: rgba(238,248,255,.70); font-size: 12px; letter-spacing:.15px;
+    }
+    .kbd{
+      font-family: var(--mono); font-size: 11px; padding: 4px 8px; border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.05); color: rgba(238,248,255,.82);
+    }
+    .float{
+      position:fixed; left:0; top:0; transform: translate(-50%, -50%);
+      pointer-events:none; font-weight: 900; letter-spacing:.2px; font-size: 14px;
+      text-shadow: 0 12px 20px rgba(0,0,0,.35); opacity:0;
+      animation: floatUp 900ms ease forwards; z-index: 200;
+    }
+    @keyframes floatUp{
+      0%{ opacity:0; transform: translate(-50%, -30%) scale(.96); filter: blur(.2px); }
+      15%{ opacity:1; transform: translate(-50%, -50%) scale(1); }
+      100%{ opacity:0; transform: translate(-50%, -120%) scale(1.04); filter: blur(.2px); }
+    }
+    .spark{
+      position:fixed; width:6px; height:6px; border-radius:99px; pointer-events:none; z-index:199; opacity:.9;
+      transform: translate(-50%, -50%); animation: spark 650ms ease-out forwards;
+      background: radial-gradient(circle at 35% 35%, rgba(255,255,255,.9), rgba(92,200,255,.85) 55%, rgba(116,255,203,0));
+      box-shadow: 0 10px 20px rgba(92,200,255,.22);
+    }
+    @keyframes spark{
+      0%{ opacity:0; transform: translate(-50%, -50%) scale(.6); }
+      20%{ opacity:1; }
+      100%{ opacity:0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.35); }
+    }
+    .list{ display:flex; flex-direction:column; gap: 10px; }
+    .row{
+      border-radius: 18px; border: 1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.04);
+      padding: 12px 12px; display:flex; align-items:center; justify-content:space-between; gap: 12px;
+      box-shadow: 0 12px 24px rgba(0,0,0,.14); position:relative; overflow:hidden;
+    }
+    .row::after{
+      content:""; position:absolute; inset:-60% -30%;
+      background: radial-gradient(closest-side at 30% 30%, rgba(92,200,255,.10), transparent 60%);
+      opacity:.9; pointer-events:none;
+    }
+    .row .info{ display:flex; flex-direction:column; gap: 4px; z-index:1; }
+    .row .name{ font-weight: 880; letter-spacing:.2px; font-size: 12.5px; }
+    .row .desc{ color: var(--muted); font-size: 11.5px; letter-spacing:.15px; line-height:1.25; }
+    .row .right{ display:flex; align-items:center; gap: 8px; z-index:1; flex-wrap:wrap; justify-content:flex-end; }
+    .price{
+      font-family: var(--mono); font-size: 11.5px; padding: 6px 10px; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.05); color: rgba(238,248,255,.85); white-space:nowrap;
+    }
+    .tag{
+      font-size: 11px; letter-spacing:.1px; padding: 4px 8px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.04); color: rgba(238,248,255,.76); white-space:nowrap;
+    }
+    .tag.good{ border-color: rgba(103,255,158,.22); background: rgba(103,255,158,.10); }
+    .tag.warn{ border-color: rgba(255,204,102,.22); background: rgba(255,204,102,.10); }
+    .tag.bad{ border-color: rgba(255,107,125,.22); background: rgba(255,107,125,.10); }
+    .tree{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 520px){ .tree{ grid-template-columns: 1fr; } .hudLeft{ min-width: unset; } }
+    .node{
+      border-radius: 18px; border: 1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.04);
+      padding: 12px 12px; box-shadow: 0 12px 24px rgba(0,0,0,.14); display:flex; gap: 12px; align-items:flex-start;
+      position:relative; overflow:hidden;
+    }
+    .node::after{ content:""; position:absolute; inset:-60% -40%; background: radial-gradient(closest-side at 30% 30%, rgba(116,255,203,.10), transparent 60%); pointer-events:none; }
+    .node .badge{
+      width:34px; height:34px; border-radius: 14px; display:grid; place-items:center;
+      border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.06); box-shadow: 0 10px 18px rgba(0,0,0,.16);
+      font-weight: 950; color: rgba(238,248,255,.92); z-index:1;
+    }
+    .node .txt{ display:flex; flex-direction:column; gap: 4px; z-index:1; }
+    .node .txt .t{ font-weight: 900; font-size: 12.5px; letter-spacing:.2px; }
+    .node .txt .d{ color: var(--muted); font-size: 11.5px; line-height:1.25; }
+    .node .act{ margin-left:auto; display:flex; flex-direction:column; gap: 8px; align-items:flex-end; z-index:1; }
+    .modalBack{
+      position:fixed; inset:0; background: rgba(0,0,0,.55);
+      display:none; align-items:center; justify-content:center; padding: 18px; z-index: 300;
+    }
+    .modalBack.show{ display:flex; }
+    .modal{
+      width: min(720px, 100%); border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.045));
+      border: 1px solid rgba(255,255,255,.16); box-shadow: 0 30px 90px rgba(0,0,0,.45); backdrop-filter: var(--glass);
+      overflow:hidden; transform: translateY(6px); animation: pop .18s ease forwards;
+    }
+    @keyframes pop{ to{ transform: translateY(0); } }
+    .modal .mhd{ display:flex; align-items:center; justify-content:space-between; gap: 10px; padding: 14px 14px; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .modal .mhd h3{ margin:0; font-size: 13px; font-weight: 920; letter-spacing:.2px; }
+    .modal .mbd{ padding: 14px; color: rgba(238,248,255,.86); font-size: 12.5px; line-height:1.45; }
+    .modal .mft{ padding: 14px; display:flex; justify-content:flex-end; gap: 10px; border-top: 1px solid rgba(255,255,255,.08); }
+    .loginBack{ position:fixed; inset:0; display:grid; place-items:center; padding: 18px; z-index: 500; }
+    .login{
+      width: min(520px, 100%); border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      border: 1px solid rgba(255,255,255,.18); box-shadow: 0 35px 100px rgba(0,0,0,.55); backdrop-filter: var(--glass);
+      overflow:hidden;
+    }
+    .login .topL{ padding: 18px 18px 14px; border-bottom: 1px solid rgba(255,255,255,.10); }
+    .login .topL h2{ margin:0; font-size: 16px; font-weight: 980; letter-spacing:.2px; }
+    .login .topL p{ margin: 8px 0 0; color: var(--muted); font-size: 12.5px; line-height:1.35; }
+    .login .midL{ padding: 16px 18px; display:flex; flex-direction:column; gap: 10px; }
+    .field{ display:flex; flex-direction:column; gap: 6px; }
+    .field label{ font-size: 11.5px; color: var(--muted); letter-spacing:.15px; }
+    input[type="text"]{
+      width:100%; padding: 12px 12px; border-radius: 16px; border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18); color: rgba(238,248,255,.92); outline:none; font-weight: 700; letter-spacing:.2px;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+    input[type="text"]:focus{ border-color: rgba(92,200,255,.35); box-shadow: 0 0 0 4px rgba(92,200,255,.12); }
+    .login .ftL{
+      padding: 16px 18px 18px; display:flex; gap: 10px; justify-content:space-between; align-items:center;
+      border-top: 1px solid rgba(255,255,255,.10);
+    }
+    .hint{ color: rgba(238,248,255,.70); font-size: 11.5px; line-height: 1.25; }
+    .toast{
+      position:fixed; right: 16px; bottom: 16px; width: min(360px, calc(100% - 32px));
+      border-radius: 18px; border: 1px solid rgba(255,255,255,.16);
+      background: rgba(12,24,38,.60); backdrop-filter: var(--glass); box-shadow: 0 20px 60px rgba(0,0,0,.40);
+      padding: 12px 12px; display:none; z-index: 999;
+    }
+    .toast.show{ display:block; animation: pop .18s ease forwards; }
+    .toast .t1{ font-weight: 900; letter-spacing:.2px; font-size: 12.5px; }
+    .toast .t2{ margin-top:4px; color: var(--muted); font-size: 12px; line-height:1.35; }
+    .foot{
+      margin-top: 12px; color: rgba(238,248,255,.60); font-size: 11.5px; letter-spacing:.12px;
+      display:flex; gap: 10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+    }
+    .link{ color: rgba(92,200,255,.92); text-decoration:none; border-bottom: 1px dashed rgba(92,200,255,.35); }
+  </style>
 </head>
-
 <body>
+  <div class="grain"></div>
 
-<div id="login">
-  <div id="loginBox">
-    <h3>Введите ник</h3>
-    <input id="nickInput" placeholder="Ваш ник">
-    <button onclick="startGame()">Войти</button>
+  <div id="loginBack" class="loginBack">
+    <div class="login" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+      <div class="topL">
+        <h2 id="loginTitle">DioClicker • Профиль</h2>
+        <p>Введи ник, чтобы открыть прогресс. Данные сохраняются в браузере (localStorage). Горячие клавиши: <span class="kbd">Space</span> удар, <span class="kbd">1..6</span> вкладки.</p>
+      </div>
+      <div class="midL">
+        <div class="field">
+          <label for="nickInput">Ник</label>
+          <input id="nickInput" type="text" inputmode="text" autocomplete="nickname" placeholder="Например: Twixe" maxlength="22" />
+        </div>
+        <div class="row" style="margin:0; padding: 10px 10px;">
+          <div class="info">
+            <div class="name">Опции запуска</div>
+            <div class="desc">Можно поменять позже в настройках.</div>
+          </div>
+          <div class="right">
+            <button class="btn ghost" id="optTournament" type="button" title="Ограничивает ускорения и оффлайн">
+              <span class="icon">T</span> Турнир
+            </button>
+            <button class="btn ghost" id="optLite" type="button" title="Упрощает визуальные эффекты">
+              <span class="icon">L</span> Lite FX
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="ftL">
+        <div class="hint">Это локальная версия. Для общего онлайна/лидерборда нужен backend.</div>
+        <div style="display:flex; gap:10px;">
+          <button class="btn bad" id="wipeBtn" type="button" title="Удаляет ВСЕ данные в этом браузере">
+            <span class="icon">!</span> Сбросить всё
+          </button>
+          <button class="btn primary" id="enterBtn" type="button">
+            <span class="icon">→</span> Войти
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 
-<div class="header">
-  <div>DioRise • Hytale — <span id="nickLabel"></span></div>
-  <div>💰 <span id="gold">0</span> ⭐ <span id="level">1</span></div>
-</div>
-
-<div class="levelbar">
-  Уровень <span id="lvlText">1</span> • Бонус <span id="lvlBonus">+0%</span>
-  <div class="bar"><span id="xpBar"></span></div>
-</div>
-
-<div class="app">
-
-<div class="panel">
-<h4>Характеристики</h4>
-<div class="item">💪 Сила <button onclick="upStat('str')">💰 <span id="c_str"></span></button></div>
-<div class="item">⚡ Ловкость <button onclick="upStat('agi')">💰 <span id="c_agi"></span></button></div>
-<div class="item">🧠 Интеллект <button onclick="upStat('int')">💰 <span id="c_int"></span></button></div>
-<div class="item">🍀 Удача <button onclick="upStat('luck')">💰 <span id="c_luck"></span></button></div>
-</div>
-
-<div class="center">
-  <div class="core">💎</div>
-  <button class="main-btn" id="hitBtn">УДАР</button>
-</div>
-
-<div class="panel">
-<h4>Автодобыча</h4>
-<div class="item">Гоблин +1 <button onclick="buyAuto(1)">💰 <span id="c_a1"></span></button></div>
-<div class="item">Рыцарь +5 <button onclick="buyAuto(5)">💰 <span id="c_a5"></span></button></div>
-</div>
-
-</div>
-
-<div class="bottom">
-  <div class="bottom-left">
-    <div class="item">Клик +1 <button onclick="buyClick()">💰 <span id="c_click"></span></button></div>
-    <div class="item">Буст +20% <button onclick="buyBoost()">💰 <span id="c_boost"></span></button></div>
-    <div class="item">Сундук <button onclick="openChest()">💰 <span id="c_chest"></span></button></div>
+  <div id="modalBack" class="modalBack" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="mhd">
+        <h3 id="modalTitle">Заголовок</h3>
+        <button class="btn ghost" id="modalClose" type="button"><span class="icon">×</span> Закрыть</button>
+      </div>
+      <div class="mbd" id="modalBody"></div>
+      <div class="mft" id="modalFoot"></div>
+    </div>
   </div>
-  <button onclick="toggleLeaders()">🏆 Лидеры</button>
-</div>
 
-<div id="leaders">
-  <h4>🏆 Лидеры</h4>
-  <div id="leadersList"></div>
-</div>
+  <div class="toast" id="toast">
+    <div class="t1" id="toastT1">Ок</div>
+    <div class="t2" id="toastT2">Сообщение</div>
+  </div>
+
+  <div class="wrap" id="app" style="display:none;">
+    <header class="top">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>DioRise • DioClicker</h1>
+          <div class="sub">прокачка • престиж • квесты • достижения • оффлайн</div>
+        </div>
+      </div>
+      <div class="rightTop">
+        <div class="pill"><span class="dot" id="onlineDot"></span><span>Игрок: <strong id="nickLabel">—</strong></span></div>
+        <button class="btn" id="saveBtn" type="button"><span class="icon">⭳</span> Save</button>
+        <button class="btn" id="helpBtn" type="button"><span class="icon">?</span> Help</button>
+        <button class="btn bad" id="logoutBtn" type="button"><span class="icon">⇄</span> Профиль</button>
+      </div>
+    </header>
+
+    <div class="navRow">
+      <div class="tabs" id="tabs">
+        <div class="tab active" data-tab="game">Игра</div>
+        <div class="tab" data-tab="shop">Магазин</div>
+        <div class="tab" data-tab="skills">Таланты</div>
+        <div class="tab" data-tab="quests">Квесты</div>
+        <div class="tab" data-tab="ach">Достижения</div>
+        <div class="tab" data-tab="leaders">Лидеры</div>
+        <div class="tab" data-tab="settings">Настройки</div>
+      </div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <button class="btn primary" id="prestigeBtn" type="button"><span class="icon">★</span> Престиж</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="hd">
+          <div class="title">
+            <div class="icon">⚙</div>
+            <div>
+              <h2 id="mainTitle">Игра</h2>
+              <div class="meta" id="mainMeta">Нажимай на ядро, прокачивайся, собирай бонусы.</div>
+            </div>
+          </div>
+          <div class="pill"><span>Автосейв: <strong id="autosave">—</strong></span></div>
+        </div>
+
+        <div class="body">
+          <div class="panel" id="panel-game">
+            <div class="bigRow">
+              <div class="statBox">
+                <div class="k">💠 Кристаллы</div>
+                <div class="v" id="goldV">0</div>
+                <div class="s">в секунду: <span id="gpsV">0</span> • за клик: <span id="gpcV">0</span></div>
+              </div>
+              <div class="statBox">
+                <div class="k">⭐ Уровень</div>
+                <div class="v"><span id="lvlV">1</span> <span style="font-size:12px; color:rgba(238,248,255,.72); font-weight:800;">(+<span id="lvlBonusV">0</span>%)</span></div>
+                <div class="s">XP: <span id="xpTxt">0/0</span></div>
+                <div class="bar" style="margin-top:10px;"><i id="xpBar"></i></div>
+              </div>
+            </div>
+
+            <div class="arena">
+              <div class="clickZone" id="clickZone">
+                <div class="clickHud">
+                  <div class="hudLeft">
+                    <div class="mini"><span class="icon">🎯</span><span>Крит: <strong id="critV">0%</strong> • Множитель: <strong id="multV">x1.00</strong></span></div>
+                    <div class="mini"><span class="icon">⏱</span><span>Буст: <strong id="boostV">нет</strong></span></div>
+                  </div>
+                  <div class="hudRight">
+                    <button class="btn" id="burstBtn" type="button"><span class="icon">⚡</span> Бёрст</button>
+                    <button class="btn" id="chestBtn" type="button"><span class="icon">🎁</span> Сундук</button>
+                    <button class="btn" id="eventBtn" type="button"><span class="icon">☄</span> Ивент</button>
+                  </div>
+                </div>
+
+                <div class="targetWrap">
+                  <button class="target" id="hitBtn" type="button" aria-label="Удар">
+                    <div class="ring" aria-hidden="true"></div>
+                    <div class="core">HIT</div>
+                  </button>
+                  <div class="targetHint">
+                    <div>Удерживай <span class="kbd">Space</span> или кликай. Комбо даёт бонус!</div>
+                    <div class="kbd">Комбо: <span id="comboV">x1.0</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row" style="margin:0;">
+                <div class="info">
+                  <div class="name">Состояние</div>
+                  <div class="desc">Сила — клик, Инженерия — пассив, Мудрость — XP, Удача — крит и сундуки.</div>
+                </div>
+                <div class="right">
+                  <span class="tag good" id="rankTag">Новичок</span>
+                  <span class="tag" id="shardsTag">Осколки: 0</span>
+                  <span class="tag" id="prestigeTag">Престиж: 0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" id="panel-shop" style="display:none;">
+            <div class="list" id="shopList"></div>
+          </div>
+
+          <div class="panel" id="panel-skills" style="display:none;">
+            <div class="row" style="margin:0 0 10px;">
+              <div class="info"><div class="name">Таланты</div><div class="desc">Перманентные бонусы за осколки престижа.</div></div>
+              <div class="right"><span class="tag" id="skillPointsTag">Осколки: 0</span></div>
+            </div>
+            <div class="tree" id="skillTree"></div>
+          </div>
+
+          <div class="panel" id="panel-quests" style="display:none;">
+            <div class="row" style="margin:0 0 10px;">
+              <div class="info"><div class="name">Ежедневные задания</div><div class="desc">Обновляются раз в день.</div></div>
+              <div class="right">
+                <span class="tag" id="dailyTag">Сегодня: —</span>
+                <button class="btn" id="rerollDailyBtn" type="button"><span class="icon">⟲</span> Реролл</button>
+              </div>
+            </div>
+            <div class="list" id="questList"></div>
+          </div>
+
+          <div class="panel" id="panel-ach" style="display:none;">
+            <div class="row" style="margin:0 0 10px;">
+              <div class="info"><div class="name">Достижения</div><div class="desc">Открывают бонусы.</div></div>
+              <div class="right"><span class="tag" id="achTag">Открыто: 0</span></div>
+            </div>
+            <div class="list" id="achList"></div>
+          </div>
+
+          <div class="panel" id="panel-leaders" style="display:none;">
+            <div class="row" style="margin:0 0 10px;">
+              <div class="info"><div class="name">Лидеры (локально)</div><div class="desc">В пределах этого браузера.</div></div>
+              <div class="right"><button class="btn" id="refreshLeadersBtn" type="button"><span class="icon">↻</span> Обновить</button></div>
+            </div>
+            <div class="list" id="leadersList"></div>
+          </div>
+
+          <div class="panel" id="panel-settings" style="display:none;">
+            <div class="list">
+              <div class="row">
+                <div class="info"><div class="name">Визуальные эффекты</div><div class="desc">Lite FX — меньше частиц.</div></div>
+                <div class="right">
+                  <button class="btn" id="toggleFxBtn" type="button"><span class="icon">✨</span> FX: <span id="fxLabel">On</span></button>
+                  <button class="btn" id="toggleShakeBtn" type="button"><span class="icon">💥</span> Shake: <span id="shakeLabel">On</span></button>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="info"><div class="name">Оффлайн-прогресс</div><div class="desc">В турнирном режиме ограничен.</div></div>
+                <div class="right">
+                  <button class="btn" id="toggleOfflineBtn" type="button"><span class="icon">⏳</span> Offline: <span id="offlineLabel">On</span></button>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="info"><div class="name">Экспорт / Импорт лидеров</div><div class="desc">Перенос JSON.</div></div>
+                <div class="right">
+                  <button class="btn" id="exportLbBtn" type="button"><span class="icon">⭳</span> Export</button>
+                  <button class="btn" id="importLbBtn" type="button"><span class="icon">⭱</span> Import</button>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="info"><div class="name">Масштаб</div><div class="desc">Для удобства.</div></div>
+                <div class="right">
+                  <button class="btn" id="scaleDownBtn" type="button"><span class="icon">−</span></button>
+                  <span class="price" id="scaleVal">100%</span>
+                  <button class="btn" id="scaleUpBtn" type="button"><span class="icon">+</span></button>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="info"><div class="name">Опасная зона</div><div class="desc">Только текущий профиль.</div></div>
+                <div class="right">
+                  <button class="btn bad" id="resetProfileBtn" type="button"><span class="icon">!</span> Сбросить профиль</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="foot">
+              <div>v2 • single-file • localStorage</div>
+              <div>Клавиши: <span class="kbd">Space</span> • <span class="kbd">B</span> • <span class="kbd">S</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="hd">
+          <div class="title">
+            <div class="icon">📌</div>
+            <div><h2>Панель</h2><div class="meta">Быстрые действия.</div></div>
+          </div>
+          <button class="btn" id="claimAllBtn" type="button"><span class="icon">✓</span> Забрать</button>
+        </div>
+        <div class="body">
+          <div class="list" id="sideList"></div>
+          <div class="row" style="margin-top:12px;">
+            <div class="info"><div class="name">Метрики</div><div class="desc">Диагностика.</div></div>
+            <div class="right"><span class="tag" id="tickTag">TPS: —</span><span class="tag" id="saveTag">Сохранено: —</span></div>
+          </div>
+          <div class="foot"><div>Совет: прокачай авто-дроны и множитель — это основа.</div><a class="link" href="#" id="openChangelog">Что нового</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <script>
-/* ===== DEFAULT STATE ===== */
-const DEFAULT_STATE={
-  gold:0,level:1,xp:0,xpNeed:100,perSec:0,
-  stats:{str:1,agi:1,int:1,luck:1},
-  prices:{str:50,agi:50,int:70,luck:90,auto1:250,auto5:1200,click:300,boost:800,chest:200}
+(()=>{"use strict";
+const $=id=>document.getElementById(id);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const now=()=>Date.now();
+function fmt(n){n=Number(n)||0;if(!isFinite(n))return"∞";const a=Math.abs(n);if(a<1000)return String(Math.floor(n));
+const u=["K","M","B","T","Qa","Qi","Sx","Sp","Oc","No","Dc"];let i=-1,x=a;while(x>=1000&&i<u.length-1){x/=1000;i++;}
+const s=n<0?"-":"";const v=x>=100?x.toFixed(0):x>=10?x.toFixed(1):x.toFixed(2);return s+v+u[i];}
+const pct=x=>(x*100).toFixed(0)+"%";
+const dec2=x=>Number(x).toFixed(2);
+const rand=(a,b)=>a+Math.random()*(b-a);
+const choice=a=>a[Math.floor(Math.random()*a.length)];
+const safeJSON=(s,f)=>{try{return JSON.parse(s)}catch(e){return f}};
+const num=v=>{v=Number(v); return (Number.isFinite(v)?v:0)};
+const KEY_LB="diorise_lb_v2";
+const DEFAULT_SETTINGS={fx:true,shake:true,offline:true,tournament:false,lite:false,scale:1.0};
+const DEFAULT_STATE={ver:2,gold:0,shards:0,prestige:0,level:1,xp:0,xpNeed:120,str:1,eng:1,wis:1,luck:1,
+  upg:{autoBots:0,clickCore:0,mult:0,crit:0,chest:0,boost:0},
+  boostEnds:0,burstReadyAt:0,eventActiveUntil:0,eventType:null,combo:1.0,comboTimer:0,
+  talents:{pMult:0,pAuto:0,pClick:0,pLuck:0,pXp:0,pCap:0},
+  ach:{},quest:{dayKey:"",rerolled:false,list:[],claimed:{}},
+  lastSaveAt:0,totalClicks:0,totalGoldEarned:0,totalChests:0,totalPrestiges:0
 };
-let state=JSON.parse(JSON.stringify(DEFAULT_STATE));
-let nick=null;
-const LEADERS_KEY="diorise_leaders";
 
-/* LOGIN */
-function startGame(){
-  nick=nickInput.value.trim();
-  if(!nick) return;
-  nickLabel.textContent=nick;
-  login.style.display="none";
-  load();
-  render();
+function sanitizeState(){
+  // Protect against corrupted localStorage values from older versions
+  if(!state || typeof state!=="object") state = deep(DEFAULT_STATE);
+
+  // Ensure structural objects exist
+  state.upg = (state.upg && typeof state.upg==="object") ? state.upg : {};
+  state.talents = (state.talents && typeof state.talents==="object") ? state.talents : {};
+  state.quest = (state.quest && typeof state.quest==="object") ? state.quest : {};
+  state.ach = (state.ach && typeof state.ach==="object") ? state.ach : {};
+
+  // Fill missing keys
+  state.upg = {...deep(DEFAULT_STATE.upg), ...state.upg};
+  state.talents = {...deep(DEFAULT_STATE.talents), ...state.talents};
+  state.quest = {...deep(DEFAULT_STATE.quest), ...state.quest};
+
+  // Coerce numeric fields
+  const numKeys = ["gold","shards","prestige","level","xp","xpNeed","str","eng","wis","luck","boostEnds","burstReadyAt","eventActiveUntil","combo","comboTimer","lastSaveAt","totalClicks","totalGoldEarned","totalChests","totalPrestiges"];
+  for(const k of numKeys){ state[k]=num(state[k]); }
+
+  // Coerce upgrade/talent numeric fields
+  for(const k of Object.keys(DEFAULT_STATE.upg)){ state.upg[k]=Math.max(0, Math.floor(num(state.upg[k]))); }
+  for(const k of Object.keys(DEFAULT_STATE.talents)){ state.talents[k]=Math.max(0, Math.floor(num(state.talents[k]))); }
+
+  // Clamp basics
+  state.level = Math.max(1, Math.floor(state.level));
+  state.xpNeed = Math.max(50, Math.floor(state.xpNeed || 120));
+  state.str = Math.max(1, Math.floor(state.str));
+  state.eng = Math.max(1, Math.floor(state.eng));
+  state.wis = Math.max(1, Math.floor(state.wis));
+  state.luck = Math.max(1, Math.floor(state.luck));
+
+  // If money became NaN previously, restore safely
+  if(!Number.isFinite(state.gold)) state.gold = 0;
+  if(!Number.isFinite(state.shards)) state.shards = 0;
+
+  // Keep combo sane
+  state.combo = clamp(num(state.combo)||1.0, 1.0, 2.5);
 }
 
-/* SAVE / LOAD */
-const saveKey=()=>`diorise_${nick}`;
-function load(){
-  const raw=localStorage.getItem(saveKey());
-  if(!raw) return;
-  const d=JSON.parse(raw);
-  state={...state,...d,stats:{...state.stats,...d.stats},prices:{...state.prices,...d.prices}};
+const SHOP=[
+ {id:"STR",name:"Сила",desc:"Кристаллы за клик +10% (база).",tag:"Статы",price:s=>60*Math.pow(1.32,s.str-1),buy:s=>{s.gold-=shopPrice("STR",s);s.str++;toast("Сила повышена","Урон за клик вырос.");}},
+ {id:"ENG",name:"Инженерия",desc:"Кристаллы в секунду +10% (база).",tag:"Статы",price:s=>70*Math.pow(1.34,s.eng-1),buy:s=>{s.gold-=shopPrice("ENG",s);s.eng++;toast("Инженерия повышена","Пассивный доход вырос.");}},
+ {id:"WIS",name:"Мудрость",desc:"XP за действия +12%.",tag:"Статы",price:s=>80*Math.pow(1.36,s.wis-1),buy:s=>{s.gold-=shopPrice("WIS",s);s.wis++;toast("Мудрость повышена","XP растёт быстрее.");}},
+ {id:"LUCK",name:"Удача",desc:"Крит/сундуки +10%.",tag:"Статы",price:s=>95*Math.pow(1.38,s.luck-1),buy:s=>{s.gold-=shopPrice("LUCK",s);s.luck++;toast("Удача повышена","Криты и лут усилились.");}},
+ {id:"DIV",separator:true},
+ {id:"AUTO",name:"Авто-дроны",desc:"Пассивный доход +1. Усиливается уровнем.",tag:"Апгрейд",price:s=>180*Math.pow(1.48,s.upg.autoBots),buy:s=>{s.gold-=shopPrice("AUTO",s);s.upg.autoBots++;toast("Авто-дроны","Пассив усилен.");}},
+ {id:"CORE",name:"Клик-ядро",desc:"База урона за клик +1.",tag:"Апгрейд",price:s=>160*Math.pow(1.46,s.upg.clickCore),buy:s=>{s.gold-=shopPrice("CORE",s);s.upg.clickCore++;toast("Клик-ядро","Урон усилен.");}},
+ {id:"MULT",name:"Множитель",desc:"Глобальный множитель дохода.",tag:"Мета",price:s=>520*Math.pow(1.62,s.upg.mult),buy:s=>{s.gold-=shopPrice("MULT",s);s.upg.mult++;toast("Множитель","Доход вырос.");}},
+ {id:"CRIT",name:"Крит-матрица",desc:"Шанс крита +1% и крит-урон +0.05x.",tag:"Мета",price:s=>360*Math.pow(1.58,s.upg.crit),buy:s=>{s.gold-=shopPrice("CRIT",s);s.upg.crit++;toast("Крит-матрица","Криты сильнее.");}},
+ {id:"CHESTQ",name:"Алхимия сундуков",desc:"Сундуки дают больше и чаще.",tag:"Лут",price:s=>420*Math.pow(1.60,s.upg.chest),buy:s=>{s.gold-=shopPrice("CHESTQ",s);s.upg.chest++;toast("Сундуки","Качество лута выросло.");}},
+ {id:"BOOST",name:"Усилитель",desc:"Буст длится дольше и сильнее.",tag:"Актив",price:s=>540*Math.pow(1.64,s.upg.boost),buy:s=>{s.gold-=shopPrice("BOOST",s);s.upg.boost++;toast("Усилитель","Бусты мощнее.");}},
+];
+const TALENTS=[
+ {id:"pMult",badge:"∞",title:"Глобальный резонанс",desc:"Постоянно: +5% к общему множителю за уровень.",cost:s=>2+s.talents.pMult,max:40},
+ {id:"pAuto",badge:"A",title:"Авто-матрица",desc:"Постоянно: +6% к пассиву за уровень.",cost:s=>2+s.talents.pAuto,max:35},
+ {id:"pClick",badge:"C",title:"Клик-реактор",desc:"Постоянно: +6% к клику за уровень.",cost:s=>2+s.talents.pClick,max:35},
+ {id:"pLuck",badge:"L",title:"Синхронизация удачи",desc:"Постоянно: +4% к критам/сундукам.",cost:s=>2+s.talents.pLuck,max:45},
+ {id:"pXp",badge:"XP",title:"Память мира",desc:"Постоянно: +6% к XP.",cost:s=>2+s.talents.pXp,max:35},
+ {id:"pCap",badge:"⏳",title:"Оффлайн-лимит",desc:"Постоянно: +1 час к лимиту оффлайна.",cost:s=>2+Math.floor(s.talents.pCap*1.15),max:24},
+];
+const ACH=[
+ {id:"a_click_100",name:"Первые 100 ударов",desc:"Сделай 100 кликов.",need:100,goal:s=>s.totalClicks,reward:{mult:0.02}},
+ {id:"a_click_1000",name:"Тысяча ударов",desc:"Сделай 1 000 кликов.",need:1000,goal:s=>s.totalClicks,reward:{mult:0.03}},
+ {id:"a_gold_50k",name:"Полсотни тысяч",desc:"Заработай 50 000 суммарно.",need:50000,goal:s=>s.totalGoldEarned,reward:{gps:0.03}},
+ {id:"a_lvl_25",name:"Опытный",desc:"Достигни 25 уровня.",need:25,goal:s=>s.level,reward:{xp:0.05}},
+ {id:"a_chest_25",name:"Сундуколог",desc:"Открой 25 сундуков.",need:25,goal:s=>s.totalChests,reward:{luck:0.04}},
+ {id:"a_prestige_1",name:"Перерождение",desc:"Сделай престиж 1 раз.",need:1,goal:s=>s.totalPrestiges,reward:{shards:2}},
+];
+function deep(o){return JSON.parse(JSON.stringify(o))}
+let nick=null,state=deep(DEFAULT_STATE),settings=deep(DEFAULT_SETTINGS);
+let lastFrame=now(),toastTimer=null;
+function profileKey(){return `diorise_profile_v2_${nick}`;}
+function loadSettings(){const d=safeJSON(localStorage.getItem("diorise_settings_v2"),null);if(d)settings={...deep(DEFAULT_SETTINGS),...d};}
+function saveSettings(){localStorage.setItem("diorise_settings_v2",JSON.stringify(settings));}
+function loadProfile(){
+  const d=safeJSON(localStorage.getItem(profileKey()),null); if(!d)return;
+  state={...deep(DEFAULT_STATE),...d};
+  state.upg={...deep(DEFAULT_STATE.upg),...(d.upg||{})};
+  state.talents={...deep(DEFAULT_STATE.talents),...(d.talents||{})};
+  state.quest={...deep(DEFAULT_STATE.quest),...(d.quest||{})};
+  state.ach=(d.ach||{});
+  if(!state.lastSaveAt)state.lastSaveAt=now();
+  if(!state.xpNeed||state.xpNeed<50)state.xpNeed=120;
+  sanitizeState();
 }
-function save(){
-  localStorage.setItem(saveKey(),JSON.stringify(state));
-  const lb=JSON.parse(localStorage.getItem(LEADERS_KEY)||"{}");
-  lb[nick]={gold:state.gold,level:state.level};
-  localStorage.setItem(LEADERS_KEY,JSON.stringify(lb));
+function readLB(){return safeJSON(localStorage.getItem(KEY_LB),{});}
+function updateLB(){
+  const lb=readLB();
+  lb[nick]={nick,gold:Math.floor(state.gold),level:state.level,prestige:state.prestige,shards:Math.floor(state.shards),updatedAt:now()};
+  localStorage.setItem(KEY_LB,JSON.stringify(lb));
 }
-
-/* RENDER */
-const bonus=()=>1+(state.level-1)*0.03;
-function render(){
-  gold.textContent=Math.floor(state.gold);
-  level.textContent=state.level;
-  lvlText.textContent=state.level;
-  lvlBonus.textContent="+"+Math.round((bonus()-1)*100)+"%";
-  xpBar.style.width=Math.min(100,(state.xp/state.xpNeed*100))+"%";
-
-  c_str.textContent=Math.floor(state.prices.str);
-  c_agi.textContent=Math.floor(state.prices.agi);
-  c_int.textContent=Math.floor(state.prices.int);
-  c_luck.textContent=Math.floor(state.prices.luck);
-  c_a1.textContent=Math.floor(state.prices.auto1);
-  c_a5.textContent=Math.floor(state.prices.auto5);
-  c_click.textContent=Math.floor(state.prices.click);
-  c_boost.textContent=Math.floor(state.prices.boost);
-  c_chest.textContent=Math.floor(state.prices.chest);
-  save();
+function saveProfile(reason="autosave"){
+  if(!nick)return;
+  state.lastSaveAt=now();
+  localStorage.setItem(profileKey(),JSON.stringify(state));
+  updateLB();
+  $("saveTag").textContent=`Сохранено: ${new Date(state.lastSaveAt).toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"})}`;
+  if(reason==="manual")toast("Сохранено","Прогресс и лидеры обновлены.");
 }
-
-/* GAMEPLAY */
+function toast(t1,t2){$("toastT1").textContent=t1;$("toastT2").textContent=t2;const el=$("toast");el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),2800);}
+function floatText(x,y,text,kind="good"){
+  const f=document.createElement("div");f.className="float";f.style.left=x+"px";f.style.top=y+"px";
+  f.style.color=kind==="warn"?"rgba(255,204,102,.95)":kind==="bad"?"rgba(255,107,125,.95)":kind==="info"?"rgba(92,200,255,.95)":"rgba(103,255,158,.95)";
+  f.textContent=text;document.body.appendChild(f);setTimeout(()=>f.remove(),950);
+}
+function sparks(x,y,n=10){
+  if(!settings.fx||settings.lite)return;
+  for(let i=0;i<n;i++){
+    const s=document.createElement("div");s.className="spark";
+    s.style.left=x+"px";s.style.top=y+"px";
+    s.style.setProperty("--dx",(rand(-1,1)*rand(40,130))+"px");
+    s.style.setProperty("--dy",(rand(-1,1)*rand(30,110)-rand(20,80))+"px");
+    document.body.appendChild(s);setTimeout(()=>s.remove(),700);
+  }
+}
+function shake(el,p=4){ if(!settings.shake)return;
+  el.animate([{transform:"translate(0,0)"},{transform:`translate(${p}px,${-p}px)`},{transform:`translate(${-p}px,${p}px)`},{transform:"translate(0,0)"}],{duration:180,easing:"ease-out"});
+}
+function openModal(title,body,foot=[]){
+  $("modalTitle").textContent=title;$("modalBody").innerHTML=body;
+  const ft=$("modalFoot");ft.innerHTML="";
+  foot.forEach(b=>{const btn=document.createElement("button");btn.className="btn "+(b.kind||"");btn.type="button";btn.innerHTML=b.html;btn.onclick=()=>b.on&&b.on();ft.appendChild(btn);});
+  $("modalBack").classList.add("show");
+}
+function closeModal(){$("modalBack").classList.remove("show");}
+$("modalClose").onclick=closeModal;
+$("modalBack").addEventListener("click",e=>{if(e.target===$("modalBack"))closeModal();});
+function lvlBonus(){return 1+(state.level-1)*0.022;}
+function talentMult(){return 1*(1+0.05*state.talents.pMult)*(state.ach.a_click_100?1.02:1)*(state.ach.a_click_1000?1.03:1);}
+function achBonus(type){
+  let m=1,gps=1,xp=1,luck=1;
+  for(const a of ACH){ if(!state.ach[a.id]||!a.reward)continue;
+    if(a.reward.mult)m*=1+a.reward.mult;
+    if(a.reward.gps)gps*=1+a.reward.gps;
+    if(a.reward.xp)xp*=1+a.reward.xp;
+    if(a.reward.luck)luck*=1+a.reward.luck;
+  }
+  if(type==="mult")return m;if(type==="gps")return gps;if(type==="xp")return xp;if(type==="luck")return luck;return 1;
+}
+function boostActive(){return now()<state.boostEnds;}
+function globalMult(){
+  const shopM=1+0.06*state.upg.mult;
+  const pM=1+0.03*state.prestige;
+  return shopM*pM*lvlBonus()*talentMult()*achBonus("mult");
+}
+function clickMult(){return (1+0.06*state.talents.pClick);}
+function autoMult(){return (1+0.06*state.talents.pAuto)*achBonus("gps");}
+function xpMult(){return (1+0.06*state.talents.pXp)*achBonus("xp");}
+function critChance(){
+  const base=0.01, fromLuck=0.0025*state.luck, fromUpg=0.01*state.upg.crit, fromTalent=0.004*state.talents.pLuck, fromAch=(achBonus("luck")-1)*0.8;
+  return clamp(base+fromLuck+fromUpg+fromTalent+fromAch,0,0.75);
+}
+function critMult(){return 1.5+0.05*state.upg.crit;}
+function baseGPC(){return (1+state.upg.clickCore)*(1+0.10*(state.str-1));}
+function baseGPS(){return state.upg.autoBots*(1+0.10*(state.eng-1));}
+function comboMult(){return state.combo;}
+function boostStrength(){return 1.25+0.08*state.upg.boost;}
+function gpc(){let v=num(baseGPC())*num(globalMult())*num(clickMult())*num(comboMult()); if(boostActive())v*=num(boostStrength()); v=num(v); return v>0?v:0;}
+function gps(){let v=num(baseGPS())*num(globalMult())*num(autoMult()); if(boostActive())v*=num(boostStrength()); v=num(v); return v>0?v:0;}
+function xpPerClick(){return Math.floor((4+Math.floor(0.35*state.wis)+Math.floor(0.12*state.level))*xpMult());}
+function xpPerSecond(){return Math.floor((1+Math.floor(0.22*state.wis))*xpMult());}
+function boostDurationMs(){return (10+1.5*state.upg.boost)*1000;}
+function rankName(){const l=state.level,p=state.prestige; if(p>=6)return"Божество"; if(p>=4)return"Повелитель"; if(p>=2)return"Хранитель"; if(l>=60)return"Странник"; if(l>=30)return"Воин"; if(l>=15)return"Путник"; return"Новичок";}
+function shopPrice(id,s){const it=SHOP.find(x=>x.id===id);return it&&it.price?Math.floor(it.price(s)):Infinity;}
+function gainGold(v){v=num(v); if(v<0)v=0; state.gold=num(state.gold)+v; state.totalGoldEarned=num(state.totalGoldEarned)+v;}
 function gainXP(v){
-  state.xp+=v;
-  while(state.xp>=state.xpNeed){
-    state.xp-=state.xpNeed;
-    state.level++;
-    state.xpNeed=Math.floor(state.xpNeed*1.5);
+  v=Math.max(0,Math.floor(v)); const old=state.level;
+  state.xp+=v; let leveled=0;
+  while(state.xp>=state.xpNeed){state.xp-=state.xpNeed;state.level++;leveled++;state.xpNeed=Math.floor(state.xpNeed*(1.25+Math.min(0.10,state.level*0.002)));}
+  if(leveled>0){toast("Новый уровень",`+${leveled} • Теперь ${state.level}`); if(state.level!==old)tickQuestLevelUps(old,state.level);}
+}
+function updateCombo(){
+  const t=now(); const dt=t-state.comboTimer; state.comboTimer=t;
+  if(dt<450)state.combo=clamp(state.combo+0.06,1.0,2.5);
+  else if(dt<900)state.combo=clamp(state.combo+0.02,1.0,2.5);
+  else state.combo=clamp(state.combo-0.08,1.0,2.5);
+}
+function checkAchievements(){
+  let u=0;
+  for(const a of ACH){
+    if(state.ach[a.id])continue;
+    if(a.goal(state)>=a.need){state.ach[a.id]=true;u++; if(a.reward&&a.reward.shards)state.shards+=a.reward.shards;}
+  }
+  if(u>0)toast("Достижение!",`Открыто: ${u}`);
+}
+function dayKey(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
+function makeDailyQuests(seed){
+  const base=[{kind:"clicks",name:"Удары",desc:"Сделай {N} ударов по ядру.",min:140,max:420,reward:"gold"},
+              {kind:"gold",name:"Кристаллы",desc:"Заработай {N} кристаллов.",min:1200,max:6500,reward:"xp"},
+              {kind:"lvl",name:"Рост",desc:"Подними {N} уровней.",min:1,max:5,reward:"shards"},
+              {kind:"chests",name:"Лут",desc:"Открой {N} сундуков.",min:2,max:7,reward:"gold"},
+              {kind:"buy",name:"Магазин",desc:"Сделай {N} покупок.",min:3,max:10,reward:"xp"}];
+  let h=0; for(let i=0;i<seed.length;i++)h=(h*31+seed.charCodeAt(i))>>>0;
+  const r=()=>{h=(h*1664525+1013904223)>>>0; return h/4294967296;}
+  const pool=[...base], picked=[];
+  for(let i=0;i<3;i++){const idx=Math.floor(r()*pool.length);picked.push(pool.splice(idx,1)[0]);}
+  return picked.map((q,i)=>{const N=Math.floor(q.min+r()*(q.max-q.min)); return {id:`d_${seed}_${q.kind}_${i}`,kind:q.kind,name:q.name,desc:q.desc.replace("{N}",String(N)),need:N,rewardType:q.reward};});
+}
+function prepareDaily(){
+  const dk=dayKey();
+  if(state.quest.dayKey!==dk){
+    state.quest.dayKey=dk; state.quest.rerolled=false; state.quest.list=makeDailyQuests(dk); state.quest.claimed={};
+    state.quest._baseClicks=state.totalClicks; state.quest._goldAcc=0; state.quest._lvlAcc=0; state.quest._chestAcc=0; state.quest._buyAcc=0;
+  }
+  $("dailyTag").textContent=`Сегодня: ${dk}`;
+}
+function tickQuestLevelUps(oldL,newL){prepareDaily(); state.quest._lvlAcc=(state.quest._lvlAcc||0)+Math.max(0,newL-oldL);}
+function tickQuestsOn(kind,amt){
+  prepareDaily();
+  state.quest._baseClicks=state.quest._baseClicks||state.totalClicks;
+  state.quest._goldAcc=state.quest._goldAcc||0;
+  state.quest._lvlAcc=state.quest._lvlAcc||0;
+  state.quest._chestAcc=state.quest._chestAcc||0;
+  state.quest._buyAcc=state.quest._buyAcc||0;
+  if(kind==="gold")state.quest._goldAcc+=amt;
+  if(kind==="chests")state.quest._chestAcc+=amt;
+  if(kind==="buy")state.quest._buyAcc+=amt;
+}
+function questProgress(q){
+  if(q.kind==="clicks")return state.totalClicks-(state.quest._baseClicks||0);
+  if(q.kind==="gold")return state.quest._goldAcc||0;
+  if(q.kind==="lvl")return state.quest._lvlAcc||0;
+  if(q.kind==="chests")return state.quest._chestAcc||0;
+  if(q.kind==="buy")return state.quest._buyAcc||0;
+  return 0;
+}
+function questReward(q){
+  const scale=1+state.level*0.02+state.prestige*0.10;
+  if(q.rewardType==="gold")return{type:"gold",value:Math.floor((450+gps()*15+gpc()*12)*scale)};
+  if(q.rewardType==="xp")return{type:"xp",value:Math.floor((220+state.wis*16)*scale)};
+  return{type:"shards",value:Math.max(1,Math.floor((1+state.level/25)*(1+state.prestige*0.3)))};
+}
+function claimQuest(q){
+  if(state.quest.claimed[q.id])return;
+  if(questProgress(q)<q.need)return;
+  const r=questReward(q);
+  if(r.type==="gold")gainGold(r.value);
+  if(r.type==="xp")gainXP(r.value);
+  if(r.type==="shards")state.shards+=r.value;
+  state.quest.claimed[q.id]=true;
+  toast("Награда получена",`${q.name}: +${fmt(r.value)} ${r.type==="gold"?"кристаллов":r.type==="xp"?"XP":"оск."}`);
+}
+function claimAll(){
+  let any=false;
+  for(const q of state.quest.list){ if(questProgress(q)>=q.need && !state.quest.claimed[q.id]){ claimQuest(q); any=true; } }
+  if(!any)toast("Пока нечего","Выполни квесты или открой достижения.");
+}
+function rerollDaily(){
+  prepareDaily();
+  if(state.quest.rerolled)return toast("Уже было","Реролл 1 раз в день.");
+  state.quest.rerolled=true; state.quest.list=makeDailyQuests(dayKey()+"_reroll"); state.quest.claimed={};
+  state.quest._baseClicks=state.totalClicks; state.quest._goldAcc=0; state.quest._lvlAcc=0; state.quest._chestAcc=0; state.quest._buyAcc=0;
+  toast("Реролл","Новые задания получены.");
+}
+function prestigeShardsGain(){
+  const e=state.totalGoldEarned; const base=Math.floor(Math.sqrt(e/25000)); const lvl=Math.floor(state.level/10); const p=Math.floor(state.prestige*0.75);
+  return Math.max(0,base+lvl-p);
+}
+function doPrestige(){
+  const gain=prestigeShardsGain();
+  if(gain<=0)return toast("Пока рано","Нужно больше прогресса (уровни и заработок).");
+  openModal("Престиж",
+    `<div style="display:flex;flex-direction:column;gap:10px;">
+      <div><strong>Ты получишь:</strong> <span class="tag good">+${gain} осколков</span></div>
+      <div>Престиж сбросит кристаллы/уровни/покупки, но таланты и достижения останутся.</div>
+      <div class="tag warn">Постоянно: +3% множителя за каждый престиж.</div>
+    </div>`,
+    [{html:`<span class="icon">×</span> Отмена`,kind:"ghost",on:closeModal},
+     {html:`<span class="icon">★</span> Сделать`,kind:"primary",on:()=>{
+        closeModal();
+        const keepAch=deep(state.ach), keepTal=deep(state.talents);
+        state=deep(DEFAULT_STATE); state.ach=keepAch; state.talents=keepTal;
+        state.shards+=gain; state.prestige+=1; state.totalPrestiges+=1;
+        prepareDaily(); saveProfile("manual"); render();
+        toast("Престиж выполнен",`+${gain} осколков.`);
+     }}]
+  );
+}
+function chestPrice(){return Math.floor((240*Math.pow(1.18,state.upg.chest))*(1+state.level*0.02));}
+function activateBoost(){ if(settings.tournament)return; state.boostEnds=Math.max(state.boostEnds,now()+boostDurationMs()); }
+function openChest(){
+  const price=chestPrice(); if(state.gold<price)return toast("Не хватает",`Нужно: ${fmt(price)}`);
+  state.gold-=price; state.totalChests++;
+  const luckF=1+0.06*(state.luck-1)+0.04*state.talents.pLuck;
+  const q=1+0.10*state.upg.chest; const roll=Math.random()*luckF;
+  const base=(gpc()*6+gps()*8+50)*q;
+  let type="gold"; if(roll>1.25)type="boost"; if(roll>1.55)type="shards"; if(roll>1.90)type="jackpot";
+  if(type==="gold"){const r=base*rand(1.0,2.1); gainGold(r); gainXP(20+4*state.wis); toast("Сундук",`+${fmt(r)} кристаллов и XP.`);}
+  else if(type==="boost"){activateBoost(); gainXP(40+6*state.wis); toast("Сундук","Выпал буст добычи.");}
+  else if(type==="shards"){const sGain=Math.max(1,Math.floor((state.level/18)*rand(1.0,1.7))); state.shards+=sGain; toast("Сундук",`+${sGain} осколков.`);}
+  else {const r=base*rand(4.0,7.0); gainGold(r); state.shards+=Math.max(1,Math.floor(rand(1,4))); gainXP(120+8*state.wis); toast("ДЖЕКПОТ",`+${fmt(r)} кристаллов и осколки!`);}
+  tickQuestsOn("chests",1); checkAchievements();
+}
+function canBurst(){return now()>=state.burstReadyAt;}
+function doBurst(){
+  if(!canBurst())return toast("Бёрст на КД",`Осталось: ${Math.ceil((state.burstReadyAt-now())/1000)}с`);
+  state.burstReadyAt=now()+22000;
+  toast("Бёрст","Серия ударов активирована.");
+  const hits=12+Math.min(16,Math.floor(state.level/6)); let i=0;
+  const iv=setInterval(()=>{i++; const r=$("hitBtn").getBoundingClientRect(); doHit(r.left+r.width/2,r.top+r.height/2); if(i>=hits)clearInterval(iv);},70);
+}
+function eventMaybeSpawn(){
+  if(now()<state.eventActiveUntil)return;
+  const chance=clamp(0.003+state.level*0.00005,0.003,0.02);
+  if(Math.random()<chance){state.eventType=choice(["meteor","rift","cache"]); state.eventActiveUntil=now()+9000; toast("Событие!","Нажми кнопку ИВЕНТ.");}
+}
+function doEvent(){
+  if(now()>state.eventActiveUntil)return toast("Ивент исчез","Успей в следующий раз.");
+  const type=state.eventType; state.eventActiveUntil=0; state.eventType=null;
+  if(type==="meteor"){const r=(gps()*18+gpc()*8+120)*rand(1.4,2.2); gainGold(r); gainXP(50+6*state.wis); toast("Метеор",`+${fmt(r)}`);}
+  else if(type==="rift"){activateBoost(); gainXP(70+7*state.wis); toast("Разлом","Активирован буст.");}
+  else {const sGain=Math.max(1,Math.floor((state.level/20)*rand(1.2,2.0))); state.shards+=sGain; toast("Тайник",`+${sGain} осколков.`);}
+}
+function doHit(x,y){
+  updateCombo();
+  const base=gpc(); const crit=Math.random()<critChance(); const amount=crit?base*critMult():base;
+  gainGold(amount); gainXP(xpPerClick());
+  state.totalClicks++; tickQuestsOn("clicks",1); tickQuestsOn("gold",amount);
+  checkAchievements();
+  floatText(x||innerWidth/2,y||innerHeight/2,`+${fmt(amount)}`,crit?"warn":"good");
+  sparks(x||innerWidth/2,y||innerHeight/2,crit?16:10);
+  shake($("hitBtn"),crit?7:4);
+}
+function buyTalent(id){
+  const t=TALENTS.find(x=>x.id===id); if(!t)return;
+  const cur=state.talents[id]||0; if(cur>=t.max)return toast("Максимум","Этот талант уже на максимуме.");
+  const cost=t.cost(state); if(state.shards<cost)return toast("Не хватает","Нужно: "+cost+" оск.");
+  state.shards-=cost; state.talents[id]=cur+1; toast("Талант улучшен",`${t.title}: ${state.talents[id]}/${t.max}`);
+}
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
+function renderShop(){
+  const list=$("shopList"); list.innerHTML="";
+  for(const it of SHOP){
+    if(it.separator){const d=document.createElement("div");d.style.height="8px";list.appendChild(d);continue;}
+    const p=shopPrice(it.id,state), can=state.gold>=p;
+    const row=document.createElement("div"); row.className="row";
+    row.innerHTML=`<div class="info"><div class="name">${it.name}</div><div class="desc">${it.desc}</div></div>
+      <div class="right"><span class="tag">${it.tag||"Покупка"}</span><span class="price">💠 ${fmt(p)}</span>
+      <button class="btn ${can?"primary":""}" ${can?"":"disabled"}><span class="icon">${can?"＋":"×"}</span> Купить</button></div>`;
+    row.querySelector("button").onclick=()=>{ if(state.gold<p)return; it.buy(state); tickQuestsOn("buy",1); checkAchievements(); render(); };
+    list.appendChild(row);
   }
 }
-hitBtn.onclick=(e)=>{
-  const gain=(state.stats.str*2)*(1+state.stats.luck*0.02)*bonus();
-  state.gold+=gain;
-  gainXP(5+state.stats.int);
-  spawn(e.clientX,e.clientY,"+"+Math.floor(gain));
-  render();
-};
-
-function upStat(s){if(state.gold<state.prices[s])return;state.gold-=state.prices[s];state.stats[s]++;state.prices[s]*=1.4;render();}
-function buyAuto(v){const k=v===1?"auto1":"auto5";if(state.gold<state.prices[k])return;state.gold-=state.prices[k];state.perSec+=v*(1+state.stats.agi*0.05);state.prices[k]*=1.9;render();}
-function buyClick(){if(state.gold<state.prices.click)return;state.gold-=state.prices.click;state.stats.str++;state.prices.click*=1.6;render();}
-function buyBoost(){if(state.gold<state.prices.boost)return;state.gold-=state.prices.boost;state.stats.int++;state.prices.boost*=1.7;render();}
-function openChest(){if(state.gold<state.prices.chest)return;state.gold-=state.prices.chest;const r=100+Math.random()*250;state.gold+=r;gainXP(30);state.prices.chest*=1.6;render();}
-
-/* LEADERS */
-function toggleLeaders(){leaders.classList.toggle("active");renderLeaders();}
+function renderSkills(){
+  const tree=$("skillTree"); tree.innerHTML="";
+  for(const t of TALENTS){
+    const cur=state.talents[t.id]||0, cost=t.cost(state), can=state.shards>=cost && cur<t.max;
+    const node=document.createElement("div"); node.className="node";
+    node.innerHTML=`<div class="badge">${t.badge}</div>
+      <div class="txt"><div class="t">${t.title} <span class="tag" style="margin-left:6px;">${cur}/${t.max}</span></div><div class="d">${t.desc}</div></div>
+      <div class="act"><span class="price">★ ${cost} оск.</span><button class="btn ${can?"primary":""}" ${can?"":"disabled"}><span class="icon">${can?"＋":"×"}</span> Улучшить</button></div>`;
+    node.querySelector("button").onclick=()=>{buyTalent(t.id); render();};
+    tree.appendChild(node);
+  }
+}
+function renderQuests(){
+  prepareDaily();
+  const list=$("questList"); list.innerHTML="";
+  for(const q of state.quest.list){
+    const p=questProgress(q), done=p>=q.need, claimed=!!state.quest.claimed[q.id], r=questReward(q);
+    const row=document.createElement("div"); row.className="row";
+    row.innerHTML=`<div class="info">
+        <div class="name">${q.name} ${done?'<span class="tag good">Готово</span>':""} ${claimed?'<span class="tag">Получено</span>':""}</div>
+        <div class="desc">${q.desc}</div>
+        <div class="bar" style="margin-top:10px;"><i style="width:${clamp(p/q.need,0,1)*100}%"></i></div>
+        <div class="desc" style="margin-top:6px;">Прогресс: <strong>${fmt(p)}/${fmt(q.need)}</strong></div>
+      </div>
+      <div class="right">
+        <span class="tag">${r.type==="gold"?"💠 кристаллы":r.type==="xp"?"⭐ XP":"★ осколки"}</span>
+        <span class="price">${r.type==="gold"?"💠 ":""}${fmt(r.value)}${r.type==="xp"?" XP":r.type==="shards"?" оск.":""}</span>
+        <button class="btn ${done&&!claimed?"primary":""}" ${done&&!claimed?"":"disabled"}><span class="icon">✓</span> Забрать</button>
+      </div>`;
+    row.querySelector("button").onclick=()=>{claimQuest(q); render();};
+    list.appendChild(row);
+  }
+}
+function renderAchievements(){
+  const list=$("achList"); list.innerHTML="";
+  for(const a of ACH){
+    const v=a.goal(state), ok=!!state.ach[a.id];
+    const row=document.createElement("div"); row.className="row";
+    row.innerHTML=`<div class="info">
+        <div class="name">${a.name} ${ok?'<span class="tag good">Открыто</span>':""}</div>
+        <div class="desc">${a.desc}</div>
+        <div class="bar" style="margin-top:10px;"><i style="width:${clamp(v/a.need,0,1)*100}%"></i></div>
+        <div class="desc" style="margin-top:6px;">${fmt(v)}/${fmt(a.need)}</div>
+      </div>
+      <div class="right"><span class="price">${ok?"✓":"—"}</span></div>`;
+    list.appendChild(row);
+  }
+}
 function renderLeaders(){
-  const lb=JSON.parse(localStorage.getItem(LEADERS_KEY)||"{}");
-  leadersList.innerHTML=Object.entries(lb)
-    .sort((a,b)=>b[1].gold-a[1].gold)
-    .slice(0,10)
-    .map((e,i)=>`${i+1}. ${e[0]} — 💰 ${Math.floor(e[1].gold)} | ⭐ ${e[1].level}`)
-    .join("<br>")||"Пусто";
+  const list=$("leadersList"); const lb=Object.values(readLB()).sort((a,b)=>(b.prestige-a.prestige)||(b.level-a.level)||(b.gold-a.gold)).slice(0,25);
+  list.innerHTML="";
+  if(lb.length===0){const e=document.createElement("div");e.className="row";e.innerHTML=`<div class="info"><div class="name">Пока пусто</div><div class="desc">Нажми Save, чтобы попасть в таблицу.</div></div>`;list.appendChild(e);return;}
+  lb.forEach((r,i)=>{const row=document.createElement("div");row.className="row";row.innerHTML=`<div class="info">
+      <div class="name">#${i+1} • ${escapeHTML(r.nick)} <span class="tag">Престиж ${r.prestige}</span></div>
+      <div class="desc">Уровень: <strong>${r.level}</strong> • Осколки: <strong>${r.shards}</strong></div>
+    </div>
+    <div class="right"><span class="price">💠 ${fmt(r.gold)}</span><span class="tag">${new Date(r.updatedAt).toLocaleString("ru-RU",{hour:"2-digit",minute:"2-digit"})}</span></div>`;
+    list.appendChild(row);});
 }
-
-/* PASSIVE */
-setInterval(()=>{
-  if(!nick) return;
-  if(state.perSec>0){
-    state.gold+=state.perSec*bonus();
-    gainXP(2);
-    render();
+function renderSidebar(){
+  const list=$("sideList"); list.innerHTML="";
+  const items=[
+    {name:"Активировать буст",desc:"Множитель добычи на короткое время.",price:boostPrice(),tag:"Актив",on:()=>{const p=boostPrice(); if(settings.tournament)return toast("Турнир","Ускорения ограничены."); if(state.gold<p)return toast("Не хватает","Нужно: "+fmt(p)); state.gold-=p; activateBoost(); toast("Буст",`x${dec2(boostStrength())} на ${Math.ceil(boostDurationMs()/1000)}с`);}},
+    {name:"Пакет покупок",desc:"Купить 5 самых выгодных статов (если хватает).",price:null,tag:"Смарт",on:()=>smartBuy()},
+    {name:"Сундучная серия",desc:"Открыть 3 сундука подряд (если хватает).",price:chestPrice()*3,tag:"Лут",on:()=>{const t=chestPrice()*3; if(state.gold<t)return toast("Не хватает","Нужно: "+fmt(t)); openChest();openChest();openChest();}},
+  ];
+  items.forEach(it=>{
+    const row=document.createElement("div");row.className="row";
+    row.innerHTML=`<div class="info"><div class="name">${it.name}</div><div class="desc">${it.desc}</div></div>
+      <div class="right">${it.tag?`<span class="tag">${it.tag}</span>`:""}${it.price!=null?`<span class="price">💠 ${fmt(it.price)}</span>`:""}
+      <button class="btn primary"><span class="icon">→</span> Запуск</button></div>`;
+    row.querySelector("button").onclick=()=>{it.on(); render();};
+    list.appendChild(row);
+  });
+}
+function boostPrice(){return Math.floor((380*Math.pow(1.25,state.upg.boost))*(1+state.level*0.015));}
+function smartBuy(){
+  let buys=0;
+  for(let k=0;k<5;k++){
+    const opts=["STR","ENG","WIS","LUCK"].map(id=>({id,p:shopPrice(id,state)})).sort((a,b)=>a.p-b.p);
+    const pick=opts[0]; if(state.gold<pick.p)break;
+    SHOP.find(x=>x.id===pick.id).buy(state); buys++; tickQuestsOn("buy",1);
   }
-},1000);
-
-/* FLOAT */
-function spawn(x,y,t){
-  const f=document.createElement("div");
-  f.className="float";
-  f.style.left=x+"px";
-  f.style.top=y+"px";
-  f.textContent=t;
-  document.body.appendChild(f);
-  setTimeout(()=>f.remove(),1000);
+  toast("Пакет покупок",buys?`Покупок: ${buys}`:"Не хватает кристаллов.");
 }
+function render(){
+  $("nickLabel").textContent=nick||"—"; $("onlineDot").classList.toggle("off",!nick);
+  $("goldV").textContent=fmt(state.gold); $("gpsV").textContent=fmt(gps()); $("gpcV").textContent=fmt(gpc());
+  $("lvlV").textContent=String(state.level); $("lvlBonusV").textContent=String(Math.round((lvlBonus()-1)*100));
+  $("xpTxt").textContent=`${fmt(state.xp)}/${fmt(state.xpNeed)}`; $("xpBar").style.width=(clamp(state.xp/state.xpNeed,0,1)*100)+"%";
+  $("critV").textContent=pct(critChance()); $("multV").textContent="x"+dec2(globalMult());
+  $("boostV").textContent=boostActive()?`${Math.ceil((state.boostEnds-now())/1000)}с • x${dec2(boostStrength())}`:"нет";
+  $("comboV").textContent="x"+dec2(state.combo);
+  $("rankTag").textContent=rankName(); $("shardsTag").textContent=`Осколки: ${Math.floor(state.shards)}`; $("prestigeTag").textContent=`Престиж: ${state.prestige}`;
+  $("skillPointsTag").textContent=`Осколки: ${Math.floor(state.shards)}`;
+  $("burstBtn").disabled=!canBurst(); $("eventBtn").disabled=!(now()<state.eventActiveUntil); $("eventBtn").style.opacity=(now()<state.eventActiveUntil)?"1":".55";
+  $("fxLabel").textContent=settings.fx?"On":"Off"; $("shakeLabel").textContent=settings.shake?"On":"Off"; $("offlineLabel").textContent=settings.offline?"On":"Off";
+  $("scaleVal").textContent=Math.round(settings.scale*100)+"%"; document.documentElement.style.setProperty("--scale",settings.scale);
+  $("achTag").textContent=`Открыто: ${Object.values(state.ach).filter(Boolean).length}/${ACH.length}`;
+  prepareDaily();
+  const ago=now()-(state.lastSaveAt||0); $("autosave").textContent=(ago<1000)?"сейчас":`${Math.ceil(ago/1000)}с назад`;
+  renderSidebar(); renderShop(); renderSkills(); renderQuests(); renderAchievements(); renderLeaders();
+}
+const panels={game:$("panel-game"),shop:$("panel-shop"),skills:$("panel-skills"),quests:$("panel-quests"),ach:$("panel-ach"),leaders:$("panel-leaders"),settings:$("panel-settings")};
+function setTab(tab){
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.tab===tab));
+  Object.keys(panels).forEach(k=>panels[k].style.display=(k===tab)?"":"none");
+  const titles={game:["Игра","Нажимай на ядро, прокачивайся, собирай бонусы."],
+    shop:["Магазин","Покупай статы и апгрейды."],
+    skills:["Таланты","Перманентные бонусы за осколки."],
+    quests:["Квесты","Ежедневные задания с наградами."],
+    ach:["Достижения","Автоматические цели и бонусы."],
+    leaders:["Лидеры","Локальная таблица этого браузера."],
+    settings:["Настройки","Визуал, оффлайн, экспорт/импорт."]};
+  $("mainTitle").textContent=titles[tab][0]; $("mainMeta").textContent=titles[tab][1];
+}
+function formatDuration(ms){const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),ss=s%60; if(h>0)return `${h}ч ${m}м`; if(m>0)return `${m}м ${ss}с`; return `${ss}с`;}
+function applyOffline(){
+  if(settings.tournament||!settings.offline)return;
+  const last=state.lastSaveAt||now(); const dt=Math.max(0,now()-last);
+  const capH=6+state.talents.pCap; const used=Math.min(dt,capH*3600*1000);
+  if(used<15000)return;
+  const secs=used/1000; const g=gps()*secs; const x=xpPerSecond()*secs;
+  gainGold(g); gainXP(x);
+  openModal("Оффлайн-прогресс",`<div style="display:flex;flex-direction:column;gap:10px;">
+    <div>Тебя не было: <strong>${formatDuration(dt)}</strong> (учтено: <strong>${formatDuration(used)}</strong>)</div>
+    <div class="tag good">+${fmt(g)} кристаллов</div>
+    <div class="tag">+${fmt(x)} XP</div>
+    <div class="tag warn">Лимит: ${capH}ч (увеличивается талантом).</div></div>`,
+    [{html:`<span class="icon">✓</span> Ок`,kind:"primary",on:closeModal}]
+  );
+}
+function openHelp(){
+  openModal("Help",`<div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="tag">Механика</div>
+    <ul style="margin:0;padding-left:18px;">
+      <li><b>Клик</b> даёт кристаллы и XP.</li>
+      <li><b>Комбо</b> растёт при быстрых кликах и усиливает урон.</li>
+      <li><b>Престиж</b> даёт осколки и постоянный множитель.</li>
+      <li><b>Квесты</b> и <b>достижения</b> ускоряют прогресс.</li>
+    </ul>
+    <div class="tag">Клавиши</div>
+    <div><span class="kbd">Space</span> удар • <span class="kbd">B</span> бёрст • <span class="kbd">S</span> магазин • <span class="kbd">1..6</span> вкладки</div>
+  </div>`,[{html:`<span class="icon">✓</span> Понятно`,kind:"primary",on:closeModal}]);
+}
+function logout(){ if(nick)saveProfile("autosave"); nick=null; state=deep(DEFAULT_STATE); $("app").style.display="none"; $("loginBack").style.display=""; $("nickInput").value=""; }
+function tryEnter(){
+  const n=$("nickInput").value.trim(); if(!n)return toast("Ник пустой","Введи ник (1–22 символа).");
+  nick=n; loadSettings(); loadProfile(); sanitizeState(); saveSettings();
+  $("loginBack").style.display="none"; $("app").style.display="";
+  setTab("game"); prepareDaily(); applyOffline(); render(); saveProfile("autosave");
+}
+$("enterBtn").onclick=tryEnter;
+$("nickInput").addEventListener("keydown",e=>{if(e.key==="Enter")tryEnter();});
+$("optTournament").onclick=()=>{settings.tournament=!settings.tournament; $("optTournament").classList.toggle("primary",settings.tournament); toast("Опция",settings.tournament?"Турнир включён.":"Турнир выключен."); saveSettings();};
+$("optLite").onclick=()=>{settings.lite=!settings.lite; $("optLite").classList.toggle("primary",settings.lite); toast("Опция",settings.lite?"Lite FX включён.":"Lite FX выключен."); saveSettings();};
+$("wipeBtn").onclick=()=>{
+  openModal("Сбросить всё",`<div class="tag bad">Это удалит профили, лидеры и настройки в этом браузере.</div>`,[
+    {html:`<span class="icon">×</span> Отмена`,kind:"ghost",on:closeModal},
+    {html:`<span class="icon">!</span> Удалить всё`,kind:"bad",on:()=>{
+      closeModal();
+      localStorage.removeItem(KEY_LB); localStorage.removeItem("diorise_settings_v2");
+      Object.keys(localStorage).forEach(k=>{if(k.startsWith("diorise_profile_v2_"))localStorage.removeItem(k);});
+      toast("Сброшено","Данные удалены. Обнови страницу.");
+    }}
+  ]);
+};
+$("saveBtn").onclick=()=>saveProfile("manual");
+$("helpBtn").onclick=openHelp;
+$("logoutBtn").onclick=logout;
+$("hitBtn").onclick=e=>{try{doHit(e.clientX,e.clientY);}catch(err){console.error(err); toast("Ошибка клика","Открой консоль (F12) и пришли ошибку.");} render();};
+$("burstBtn").onclick=()=>{doBurst(); render();};
+$("chestBtn").onclick=()=>{openChest(); render();};
+$("eventBtn").onclick=()=>{doEvent(); render();};
+$("prestigeBtn").onclick=()=>{doPrestige();};
+$("claimAllBtn").onclick=()=>{claimAll(); render();};
+$("tabs").addEventListener("click",e=>{const t=e.target.closest(".tab"); if(!t)return; setTab(t.dataset.tab);});
+$("rerollDailyBtn").onclick=()=>{rerollDaily(); render();};
+$("refreshLeadersBtn").onclick=()=>{renderLeaders(); toast("Лидеры","Обновлено.");};
+$("toggleFxBtn").onclick=()=>{settings.fx=!settings.fx; saveSettings(); render();};
+$("toggleShakeBtn").onclick=()=>{settings.shake=!settings.shake; saveSettings(); render();};
+$("toggleOfflineBtn").onclick=()=>{settings.offline=!settings.offline; saveSettings(); render();};
+$("exportLbBtn").onclick=()=>{
+  const data=JSON.stringify(readLB(),null,2);
+  openModal("Экспорт лидеров",`<textarea style="width:100%;height:260px;border-radius:16px;border:1px solid rgba(255,255,255,.14);background: rgba(0,0,0,.18);color: rgba(238,248,255,.92);padding:12px;font-family: var(--mono);font-size: 11px;">${escapeHTML(data)}</textarea>`,
+    [{html:`<span class="icon">✓</span> Закрыть`,kind:"primary",on:closeModal}]);
+};
+$("importLbBtn").onclick=()=>{
+  openModal("Импорт лидеров",`<div class="desc" style="margin-bottom:10px;color: rgba(238,248,255,.75);">Вставь JSON и нажми “Импорт”.</div>
+    <textarea id="lbImport" style="width:100%;height:240px;border-radius:16px;border:1px solid rgba(255,255,255,.14);background: rgba(0,0,0,.18);color: rgba(238,248,255,.92);padding:12px;font-family: var(--mono);font-size: 11px;"></textarea>`,
+    [{html:`<span class="icon">×</span> Отмена`,kind:"ghost",on:closeModal},
+     {html:`<span class="icon">⭱</span> Импорт`,kind:"primary",on:()=>{
+        const raw=$("lbImport").value.trim(); const d=safeJSON(raw,null);
+        if(!d||typeof d!=="object")return toast("Ошибка","Некорректный JSON.");
+        localStorage.setItem(KEY_LB,JSON.stringify(d)); closeModal(); toast("Импорт","Лидеры импортированы."); renderLeaders();
+     }}]);
+};
+$("scaleDownBtn").onclick=()=>{settings.scale=clamp(settings.scale-0.05,0.85,1.15); saveSettings(); render();};
+$("scaleUpBtn").onclick=()=>{settings.scale=clamp(settings.scale+0.05,0.85,1.15); saveSettings(); render();};
+$("resetProfileBtn").onclick=()=>{openModal("Сбросить профиль",`<div class="tag bad">Удалить прогресс ника: <b>${escapeHTML(nick||"")}</b></div>`,[
+  {html:`<span class="icon">×</span> Отмена`,kind:"ghost",on:closeModal},
+  {html:`<span class="icon">!</span> Удалить`,kind:"bad",on:()=>{localStorage.removeItem(profileKey()); closeModal(); toast("Готово","Профиль удалён."); logout();}}
+]);};
+$("openChangelog").onclick=e=>{e.preventDefault(); openModal("Что нового в v2",`<ul style="margin:0;padding-left:18px;">
+  <li>Полный редизайн UI, эффекты и анимации.</li><li>Баланс: комбо, крит, множители.</li><li>Престиж + таланты.</li><li>Квесты и достижения.</li><li>Ивенты, сундуки, активный бёрст.</li></ul>`,
+  [{html:`<span class="icon">✓</span> Ок`,kind:"primary",on:closeModal}]);};
+window.addEventListener("keydown",e=>{
+  if(!nick)return;
+  if(e.key===" "){e.preventDefault(); const r=$("hitBtn").getBoundingClientRect(); try{doHit(r.left+r.width/2,r.top+r.height/2);}catch(err){console.error(err); toast("Ошибка клика","Открой консоль (F12) и пришли ошибку.");} render();}
+  if(e.key.toLowerCase()==="b"){doBurst(); render();}
+  if(e.key.toLowerCase()==="s"){setTab("shop");}
+  if(e.key>="1"&&e.key<="6"){const map=["game","shop","skills","quests","ach","leaders"]; setTab(map[Number(e.key)-1]);}
+});
+function tick(dt){
+  if(!nick)return;
+  gainGold(gps()*dt); gainXP(xpPerSecond()*dt);
+  state.combo=clamp(state.combo-(dt*0.12),1.0,2.5);
+  eventMaybeSpawn(); checkAchievements();
+  state._nextSaveAt=state._nextSaveAt||now()+12000;
+  if(now()>=state._nextSaveAt){state._nextSaveAt=now()+12000; saveProfile("autosave");}
+  render();
+}
+function loop(){
+  const t=now(); const dt=clamp((t-lastFrame)/1000,0,0.25); lastFrame=t;
+  tick(dt); requestAnimationFrame(loop);
+}
+loadSettings(); document.documentElement.style.setProperty("--scale",settings.scale);
+requestAnimationFrame(loop);
+toast("Готово","Введи ник, чтобы начать.");
+})();
 </script>
 </body>
 </html>
