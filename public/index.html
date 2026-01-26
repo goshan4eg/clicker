@@ -4,186 +4,76 @@
 <meta charset="UTF-8">
 <title>DioRise • Hytale</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
 :root{
-  --bg:#0b0f14;
-  --bg2:#0f1622;
-  --panel:rgba(255,255,255,.06);
-  --panel2:rgba(255,255,255,.04);
-  --border:rgba(255,255,255,.08);
-  --accent:#4da3ff;
-  --accent2:#6be6c1;
-  --gold:#f2c94c;
-  --text:#e6edf3;
-  --muted:#8b9bb4;
+  --bg:#0f1b1f; --bg2:#0b1418;
+  --panel:#1f343a; --panel2:#17292e;
+  --line:#2e555f; --accent:#4da3ff;
+  --gold:#e8c15a; --text:#e3f4f6;
 }
-
-*{
-  box-sizing:border-box;
-  font-family:Inter,Segoe UI,Arial;
-}
-
+*{box-sizing:border-box;font-family:Segoe UI,Arial}
 body{
   margin:0;
-  color:var(--text);
   background:
-    radial-gradient(900px 500px at 80% -10%,#1b3b6f55,transparent),
-    radial-gradient(700px 400px at 10% 10%,#1b6f5f44,transparent),
+    radial-gradient(900px 500px at 10% -10%,#2f5f67,transparent),
+    radial-gradient(700px 400px at 90% 10%,#2f6f5c,transparent),
     linear-gradient(180deg,var(--bg),var(--bg2));
+  color:var(--text);
 }
+
+/* LOGIN */
+#login{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:1000}
+#loginBox{background:linear-gradient(180deg,var(--panel),var(--panel2));padding:20px;border-radius:16px;width:280px}
+#loginBox input{width:100%;padding:10px;border-radius:8px;border:none;margin-bottom:10px}
 
 /* HEADER */
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:16px 24px;
-  background:rgba(0,0,0,.55);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
-  font-weight:800;
-}
-.header span{
-  margin-left:12px;
-}
+.header{display:flex;justify-content:space-between;padding:12px 18px;background:#182d32;border-bottom:1px solid var(--line);font-weight:700}
 
-/* LEVEL BAR */
-.levelbar{
-  padding:14px 24px;
-}
-.bar{
-  height:10px;
-  background:#070b10;
-  border-radius:6px;
-  overflow:hidden;
-}
-.bar span{
-  display:block;
-  height:100%;
-  background:linear-gradient(90deg,var(--accent),var(--accent2));
-  width:0%;
-}
+/* LEVEL */
+.levelbar{padding:10px 18px;background:#0c191d}
+.bar{height:12px;background:#081417;border-radius:6px;overflow:hidden}
+.bar span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#6fb3aa)}
 
 /* LAYOUT */
-.app{
-  display:grid;
-  grid-template-columns:280px 1fr 280px;
-  gap:18px;
-  padding:18px 24px 120px;
-}
-
-/* PANELS */
-.panel{
-  background:linear-gradient(180deg,var(--panel),var(--panel2));
-  border-radius:18px;
-  padding:14px;
-  border:1px solid var(--border);
-  backdrop-filter:blur(18px);
-}
-
-/* ITEMS */
-.item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  background:rgba(0,0,0,.35);
-  padding:10px 12px;
-  border-radius:12px;
-  margin-bottom:8px;
-  font-size:14px;
-}
+.app{display:grid;grid-template-columns:260px 1fr 260px;gap:16px;padding:16px}
+.panel{background:linear-gradient(180deg,var(--panel),var(--panel2));border-radius:16px;padding:12px;border:1px solid #203f45}
+.item{display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,.25);padding:8px 10px;border-radius:10px;margin-bottom:8px}
 
 /* CENTER */
-.center{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:24px;
-}
+.center{display:flex;flex-direction:column;align-items:center;gap:16px}
+.core{width:240px;height:240px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#a7d7cf,#4e9f95);box-shadow:0 0 40px rgba(143,209,199,.7);display:flex;align-items:center;justify-content:center;font-size:54px}
+.main-btn{background:linear-gradient(180deg,#4da3ff,#2f6fd4);color:#fff;padding:18px 60px;font-size:28px;border-radius:32px;border:none;font-weight:900;cursor:pointer}
 
-.core{
-  width:260px;
-  height:260px;
-  border-radius:50%;
-  background:
-    radial-gradient(circle at 30% 30%,#7fb7ff,#2b4e7a);
-  box-shadow:
-    0 0 40px #4da3ff55,
-    inset 0 0 40px #ffffff22;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:64px;
-}
-
-.main-btn{
-  background:linear-gradient(180deg,var(--accent),#2b6fc7);
-  color:#fff;
-  padding:20px 80px;
-  font-size:24px;
-  border-radius:40px;
-  border:none;
-  font-weight:900;
-  cursor:pointer;
-  box-shadow:0 10px 30px #4da3ff55;
-  transition:.15s;
-}
-.main-btn:hover{transform:translateY(-2px)}
-
-/* BUTTONS */
-button{
-  background:linear-gradient(180deg,#ffffff,#cfd8e3);
-  border:none;
-  border-radius:10px;
-  font-weight:800;
-  padding:6px 14px;
-  cursor:pointer;
-  color:#111;
-}
+/* BUTTON */
+button{background:#f1f5f9;border:none;border-radius:8px;font-weight:800;padding:6px 14px;cursor:pointer}
 
 /* BOTTOM */
-.bottom{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  background:rgba(0,0,0,.6);
-  backdrop-filter:blur(18px);
-  border-top:1px solid var(--border);
-  padding:14px 24px;
-  display:flex;
-  gap:12px;
-}
-.bottom .item{
-  min-width:220px;
-  margin:0;
-}
+.bottom{position:fixed;left:0;right:0;bottom:0;background:#13262b;border-top:1px solid var(--line);padding:8px;display:flex;justify-content:space-between;align-items:center}
+.bottom-left{display:flex;gap:10px}
+
+/* LEADERS */
+#leaders{position:fixed;right:10px;bottom:60px;width:260px;background:linear-gradient(180deg,var(--panel),var(--panel2));border-radius:14px;border:1px solid #203f45;padding:10px;display:none}
+#leaders.active{display:block}
 
 /* FLOAT */
-.float{
-  position:absolute;
-  color:var(--gold);
-  font-weight:900;
-  pointer-events:none;
-  animation:float 1s forwards;
-}
-@keyframes float{
-  from{opacity:1}
-  to{transform:translateY(-60px);opacity:0}
-}
+.float{position:absolute;color:var(--gold);font-weight:900;pointer-events:none;animation:float 1s forwards}
+@keyframes float{to{transform:translateY(-50px);opacity:0}}
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <div>DioRise • Hytale</div>
-  <div>
-    💰 <span id="gold">0</span>
-    ⭐ <span id="level">1</span>
+<div id="login">
+  <div id="loginBox">
+    <h3>Введите ник</h3>
+    <input id="nickInput" placeholder="Ваш ник">
+    <button onclick="startGame()">Войти</button>
   </div>
+</div>
+
+<div class="header">
+  <div>DioRise • Hytale — <span id="nickLabel"></span></div>
+  <div>💰 <span id="gold">0</span> ⭐ <span id="level">1</span></div>
 </div>
 
 <div class="levelbar">
@@ -202,8 +92,8 @@ button{
 </div>
 
 <div class="center">
-<div class="core">💎</div>
-<button class="main-btn" onclick="clickCore(event)">УДАР</button>
+  <div class="core">💎</div>
+  <button class="main-btn" id="hitBtn">УДАР</button>
 </div>
 
 <div class="panel">
@@ -215,155 +105,137 @@ button{
 </div>
 
 <div class="bottom">
-  <div class="item">Клик +1 <button onclick="buyClick()">💰 <span id="c_click"></span></button></div>
-  <div class="item">Буст +20% <button onclick="buyBoost()">💰 <span id="c_boost"></span></button></div>
-  <div class="item">Сундук <button onclick="openChest()">💰 <span id="c_chest"></span></button></div>
+  <div class="bottom-left">
+    <div class="item">Клик +1 <button onclick="buyClick()">💰 <span id="c_click"></span></button></div>
+    <div class="item">Буст +20% <button onclick="buyBoost()">💰 <span id="c_boost"></span></button></div>
+    <div class="item">Сундук <button onclick="openChest()">💰 <span id="c_chest"></span></button></div>
+  </div>
+  <button onclick="toggleLeaders()">🏆 Лидеры</button>
+</div>
+
+<div id="leaders">
+  <h4>🏆 Лидеры</h4>
+  <div id="leadersList"></div>
 </div>
 
 <script>
-/* ===== ВЕСЬ ТВОЙ ИСХОДНЫЙ JS БЕЗ ИЗМЕНЕНИЙ ===== */
-let gold=0;
-let level=1;
-let xp=0;
-let xpNeed=100;
-
-let stats={str:1,agi:1,int:1,luck:1};
-
-let prices={
-  str:50,agi:50,int:70,luck:90,
-  auto1:250,auto5:1200,
-  click:300,boost:800,chest:200
+/* ========= DEFAULT STATE ========= */
+const DEFAULT_STATE = {
+  gold:0, level:1, xp:0, xpNeed:100, perSec:0,
+  stats:{str:1,agi:1,int:1,luck:1},
+  prices:{str:70,agi:70,int:70,luck:90,auto1:250,auto5:1200,click:300,boost:800,chest:200}
 };
 
-let perSec=0;
+let nick=null;
+let state=JSON.parse(JSON.stringify(DEFAULT_STATE));
+const LEADERS_KEY="diorise_leaders";
 
-const bonus=()=>1+(level-1)*0.03;
+/* ========= LOGIN ========= */
+function startGame(){
+  const n=nickInput.value.trim();
+  if(!n) return;
+  nick=n;
+  nickLabel.textContent=nick;
+  login.style.display="none";
+  safeLoad();
+  render();
+}
 
+/* ========= SAVE / LOAD ========= */
+const saveKey=()=>`diorise_${nick}`;
+function safeLoad(){
+  const raw=localStorage.getItem(saveKey());
+  if(!raw) return;
+  try{
+    const d=JSON.parse(raw);
+    state={...DEFAULT_STATE,...d,
+      stats:{...DEFAULT_STATE.stats,...d.stats},
+      prices:{...DEFAULT_STATE.prices,...d.prices}
+    };
+  }catch{}
+}
 function save(){
-  localStorage.setItem("diorise_full_restore",JSON.stringify({
-    gold,level,xp,xpNeed,stats,prices,perSec
-  }));
+  localStorage.setItem(saveKey(),JSON.stringify(state));
+  const lb=JSON.parse(localStorage.getItem(LEADERS_KEY)||"{}");
+  lb[nick]={gold:state.gold,level:state.level};
+  localStorage.setItem(LEADERS_KEY,JSON.stringify(lb));
 }
 
-function load(){
-  let d=JSON.parse(localStorage.getItem("diorise_full_restore"));
-  if(!d)return;
-  gold=d.gold||0;
-  level=d.level||1;
-  xp=d.xp||0;
-  xpNeed=d.xpNeed||100;
-  stats=d.stats||stats;
-  prices=d.prices||prices;
-  perSec=d.perSec||0;
-}
-
-function update(){
-  gold=Math.max(0,Math.floor(gold));
-  goldEl.textContent=gold;
-  levelEl.textContent=level;
-  lvlText.textContent=level;
+/* ========= RENDER ========= */
+const bonus=()=>1+(state.level-1)*0.03;
+function render(){
+  gold.textContent=Math.floor(state.gold);
+  level.textContent=state.level;
+  lvlText.textContent=state.level;
   lvlBonus.textContent="+"+Math.round((bonus()-1)*100)+"%";
-  xpBar.style.width=Math.min(100,(xp/xpNeed*100))+"%";
+  xpBar.style.width=Math.min(100,(state.xp/state.xpNeed*100))+"%";
 
-  c_str.textContent=Math.floor(prices.str);
-  c_agi.textContent=Math.floor(prices.agi);
-  c_int.textContent=Math.floor(prices.int);
-  c_luck.textContent=Math.floor(prices.luck);
-  c_a1.textContent=Math.floor(prices.auto1);
-  c_a5.textContent=Math.floor(prices.auto5);
-  c_click.textContent=Math.floor(prices.click);
-  c_boost.textContent=Math.floor(prices.boost);
-  c_chest.textContent=Math.floor(prices.chest);
+  c_str.textContent=Math.floor(state.prices.str);
+  c_agi.textContent=Math.floor(state.prices.agi);
+  c_int.textContent=Math.floor(state.prices.int);
+  c_luck.textContent=Math.floor(state.prices.luck);
+  c_a1.textContent=Math.floor(state.prices.auto1);
+  c_a5.textContent=Math.floor(state.prices.auto5);
+  c_click.textContent=Math.floor(state.prices.click);
+  c_boost.textContent=Math.floor(state.prices.boost);
+  c_chest.textContent=Math.floor(state.prices.chest);
 
   save();
 }
 
+/* ========= GAMEPLAY ========= */
 function gainXP(v){
-  xp+=v;
-  if(xp>=xpNeed){
-    xp-=xpNeed;
-    level++;
-    xpNeed=Math.floor(xpNeed*1.5);
+  state.xp+=v;
+  while(state.xp>=state.xpNeed){
+    state.xp-=state.xpNeed;
+    state.level++;
+    state.xpNeed=Math.floor(state.xpNeed*1.5);
   }
 }
-
-function clickCore(e){
-  let gain=(stats.str*2)*(1+stats.luck*0.02)*bonus();
-  gold+=gain;
-  gainXP(5+stats.int);
+hitBtn.onclick=(e)=>{
+  const gain=(state.stats.str*2)*(1+state.stats.luck*0.02)*bonus();
+  state.gold+=gain;
+  gainXP(5+state.stats.int);
   spawn(e.clientX,e.clientY,"+"+Math.floor(gain));
-  update();
+  render();
+};
+
+function upStat(s){if(state.gold<state.prices[s])return;state.gold-=state.prices[s];state.stats[s]++;state.prices[s]*=1.4;render();}
+function buyAuto(v){const k=v===1?"auto1":"auto5";if(state.gold<state.prices[k])return;state.gold-=state.prices[k];state.perSec+=v*(1+state.stats.agi*0.05);state.prices[k]*=1.9;render();}
+function buyClick(){if(state.gold<state.prices.click)return;state.gold-=state.prices.click;state.stats.str++;state.prices.click*=1.6;render();}
+function buyBoost(){if(state.gold<state.prices.boost)return;state.gold-=state.prices.boost;state.stats.int++;state.prices.boost*=1.7;render();}
+function openChest(){if(state.gold<state.prices.chest)return;state.gold-=state.prices.chest;const r=100+Math.random()*250;state.gold+=r;gainXP(30);state.prices.chest*=1.6;render();}
+
+/* ========= LEADERS ========= */
+function toggleLeaders(){leaders.classList.toggle("active");renderLeaders();}
+function renderLeaders(){
+  const lb=JSON.parse(localStorage.getItem(LEADERS_KEY)||"{}");
+  leadersList.innerHTML=Object.entries(lb)
+    .sort((a,b)=>b[1].gold-a[1].gold)
+    .slice(0,10)
+    .map((e,i)=>`${i+1}. ${e[0]} — 💰 ${Math.floor(e[1].gold)} | ⭐ ${e[1].level}`)
+    .join("<br>")||"Пусто";
 }
 
-function upStat(s){
-  if(gold<prices[s])return;
-  gold-=prices[s];
-  stats[s]++;
-  prices[s]*=1.4;
-  update();
-}
+/* ========= PASSIVE ========= */
+setInterval(()=>{
+  if(!nick) return;
+  if(state.perSec>0){
+    state.gold+=state.perSec*bonus();
+    gainXP(2);
+    render();
+  }
+},1000);
 
-function buyAuto(v){
-  let key=v===1?"auto1":"auto5";
-  if(gold<prices[key])return;
-  gold-=prices[key];
-  perSec+=v*(1+stats.agi*0.05);
-  prices[key]*=1.9;
-  update();
-}
-
-function buyClick(){
-  if(gold<prices.click)return;
-  gold-=prices.click;
-  stats.str++;
-  prices.click*=1.6;
-  update();
-}
-
-function buyBoost(){
-  if(gold<prices.boost)return;
-  gold-=prices.boost;
-  stats.int++;
-  prices.boost*=1.7;
-  update();
-}
-
-function openChest(){
-  if(gold<prices.chest)return;
-  gold-=prices.chest;
-  gold+=100+Math.random()*250;
-  gainXP(30);
-  prices.chest*=1.6;
-  update();
-}
-
+/* ========= FLOAT ========= */
 function spawn(x,y,t){
-  let f=document.createElement('div');
-  f.className='float';
-  f.style.left=x+'px';
-  f.style.top=y+'px';
+  const f=document.createElement("div");
+  f.className="float";
+  f.style.left=x+"px"; f.style.top=y+"px";
   f.textContent=t;
   document.body.appendChild(f);
   setTimeout(()=>f.remove(),1000);
 }
-
-setInterval(()=>{
-  if(perSec>0){
-    gold+=perSec*bonus();
-    gainXP(2);
-    update();
-  }
-},1000);
-
-const goldEl=document.getElementById('gold');
-const levelEl=document.getElementById('level');
-const lvlText=document.getElementById('lvlText');
-const lvlBonus=document.getElementById('lvlBonus');
-const xpBar=document.getElementById('xpBar');
-
-load();
-update();
 </script>
-
 </body>
 </html>
