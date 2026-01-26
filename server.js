@@ -1,8 +1,8 @@
 require("dotenv").config();
 
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
+const fs = require("fs");
 const path = require("path");
 
 const app = express();
@@ -11,55 +11,92 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 const PORT = process.env.PORT || 3000;
-const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/diorise";
 
-mongoose.connect(MONGO_URI)
-  .then(()=>console.log("✅ MongoDB connected"))
-  .catch(err=>{
-    console.error("❌ Mongo error", err);
-    process.exit(1);
-  });
+/* ================= STORAGE ================= */
+const DATA_FILE = path.join(__dirname, "players.json");
 
-const PlayerSchema = new mongoose.Schema({
-  nick: { type:String, unique:true, required:true },
-  points:{ type:Number, default:0 },
-  pps:{ type:Number, default:0 },
-  mult:{ type:Number, default:1 },
-  level:{ type:Number, default:1 },
-  lastOnline:{ type:Number, default:Date.now }
-});
+let players = {};
 
-const Player = mongoose.model("Player", PlayerSchema);
+// загрузка из файла
+if (fs.existsSync(DATA_FILE)) {
+  try {
+    players = JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
+    console.log("📂 Players loaded:", Object.keys(players).length);
+  } catch (e) {
+    console.error("❌ players.json broken, reset");
+    players = {};
+  }
+}
 
-// ===== LOGIN =====
-app.post("/login", async (req,res)=>{
+// сохранение в файл
+function savePlayers() {
+  fs.writeFileSync(DATA_FILE, JSON.stringify(players, null, 2));
+}
+
+/* ================= LOGIN ================= */
+app.post("/login", (req, res) => {
   const { nick } = req.body;
-  if(!nick || nick.length < 2){
-    return res.status(400).json({ error:"Неверный ник" });
+
+  if (!nick || nick.length < 2) {
+    return res.status(400).json({ error: "Неверный ник" });
   }
 
-  let player = await Player.findOne({ nick });
-  if(!player){
-    player = await Player.create({ nick });
-    console.log("🆕 New player:", nick);
+  if (!players[nick]) {
+    players[nick] = {
+      nick,
+      gold: 0,
+      level: 1,
+      xp: 0,
+      stats: { str: 1, agi: 1, int: 1, luck: 1 },
+      perSec: 0,
+      lastOnline: Date.now()
+    };
+    console.log("🆕 Новый игрок:", nick);
+  } else {
+    players[nick].lastOnline = Date.now();
   }
 
-  player.lastOnline = Date.now();
-  await player.save();
-
-  res.json(player);
+  savePlayers();
+  res.json(players[nick]);
 });
 
-// ===== SAVE =====
-app.post("/save", async (req,res)=>{
-  if(!req.body.nick){
-    return res.status(400).json({ error:"No nick" });
+/* ================= SAVE ================= */
+app.post("/save", (req, res) => {
+  const { nick } = req.body;
+  if (!nick || !players[nick]) {
+    return res.status(400).json({ error: "Игрок не найден" });
   }
-  await Player.updateOne({ nick:req.body.nick }, req.body);
-  res.json({ ok:true });
+
+  players[nick] = {
+    ...players[nick],
+    ...req.body,
+    lastOnline: Date.now()
+  };
+
+  savePlayers();
+  res.json({ ok: true });
 });
 
-// ===== HEALTH =====
-app.get("/health",(req,res)=>res.json({ ok:true }));
+/* ================= LEADERS ================= */
+app.get("/leaders", (req, res) => {
+  const list = Object.values(players)
+    .sort((a, b) => b.gold - a.gold)
+    .slice(0, 10)
+    .map(p => ({
+      nick: p.nick,
+      gold: p.gold,
+      level: p.level
+    }));
 
-app.listen(PORT, ()=>console.log("🚀 http://localhost:"+PORT));
+  res.json(list);
+});
+
+/* ================= HEALTH ================= */
+app.get("/health", (req, res) => {
+  res.json({ ok: true, players: Object.keys(players).length });
+});
+
+/* ================= START ================= */
+app.listen(PORT, () => {
+  console.log("🚀 Server started on http://localhost:" + PORT);
+});
