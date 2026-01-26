@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DioClicker</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+/* ================= THEME ================= */
+:root{
+  --bg:#05070c;
+  --glass:rgba(18,26,40,.85);
+  --stroke:rgba(120,180,255,.18);
+  --accent:#3cffb0;
+  --accent2:#2a8cff;
+  --text:#eaf2ff;
+  --muted:rgba(234,242,255,.6);
+}
+
+/* ================= BASE ================= */
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter;
+  background:
+    radial-gradient(900px 700px at 20% 20%, rgba(60,255,176,.15), transparent 60%),
+    radial-gradient(900px 700px at 80% 80%, rgba(42,140,255,.15), transparent 60%),
+    linear-gradient(180deg,#04060a,#070b14);
+  color:var(--text);
+  padding-bottom:280px;
+}
+
+/* ================= HEADER ================= */
+.header{
+  text-align:center;
+  padding:24px;
+}
+.logo{
+  font-family:Orbitron;
+  font-size:42px;
+  letter-spacing:.35em;
+  color:var(--accent);
+  text-shadow:0 0 35px rgba(60,255,176,.7);
+}
+
+/* ================= LAYOUT ================= */
+.app{
+  max-width:1500px;
+  margin:auto;
+  padding:20px;
+  display:grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap:20px;
+}
+@media(max-width:1200px){.app{grid-template-columns:1fr}}
+
+.panel{
+  background:var(--glass);
+  border:1px solid var(--stroke);
+  border-radius:22px;
+  padding:18px;
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+}
+
+/* ================= TEXT ================= */
+h2{
+  font-family:Orbitron;
+  letter-spacing:.15em;
+  margin:0 0 14px;
+  text-transform:uppercase;
+}
+.stat{
+  display:flex;
+  justify-content:space-between;
+  font-size:14px;
+  margin:6px 0;
+  color:var(--muted);
+}
+
+/* ================= LEVEL ================= */
+.level{
+  font-family:Orbitron;
+  font-size:36px;
+  color:var(--accent);
+}
+.bar{
+  height:16px;
+  border-radius:10px;
+  background:#0a1220;
+  overflow:hidden;
+  margin:8px 0;
+}
+.bar>div{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transition:width .35s ease;
+}
+
+/* ================= CLICK ================= */
+.click{
+  width:220px;height:220px;
+  margin:26px auto;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:Orbitron;
+  font-size:20px;
+  letter-spacing:.2em;
+  cursor:pointer;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), transparent 60%),
+    radial-gradient(circle at center, rgba(60,255,176,.35), rgba(10,15,35,.95));
+  border:2px solid var(--accent);
+  box-shadow:0 0 60px rgba(60,255,176,.8);
+  user-select:none;
+}
+.click:active{transform:scale(.94)}
+.click.pulse{animation:pulse .5s}
+@keyframes pulse{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.1)}
+  100%{transform:scale(1)}
+}
+
+/* ================= BUTTON ================= */
+button{
+  background:linear-gradient(180deg,var(--accent),var(--accent2));
+  border:none;
+  color:#000;
+  font-weight:900;
+  padding:8px 14px;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+/* ================= LEVEL UP ================= */
+.level-flash{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle at center, rgba(60,255,176,.25), transparent 60%);
+  animation:flash .6s;
+  pointer-events:none;
+  z-index:999;
+}
+@keyframes flash{
+  0%{opacity:0}
+  40%{opacity:1}
+  100%{opacity:0}
+}
+.level-text{
+  position:fixed;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-family:Orbitron;
+  font-size:48px;
+  letter-spacing:.3em;
+  color:var(--accent);
+  animation:textpop .9s;
+  pointer-events:none;
+  z-index:1000;
+}
+@keyframes textpop{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}
+  40%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.6)}
+}
+
+/* ================= CHAT ================= */
+.chat{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  background:#070b16;
+  border-top:1px solid var(--stroke);
+}
+.chat-top{
+  display:flex;
+  gap:10px;
+  padding:8px;
+}
+.chat-top input{
+  flex:1;
+  padding:10px;
+  border-radius:12px;
+  border:1px solid var(--stroke);
+  background:#02040a;
+  color:#fff;
+}
+.chatlog{
+  max-height:180px;
+  overflow:auto;
+  padding:10px;
+  font-size:14px;
+}
+.chatlog div{margin-bottom:6px}
+.chat-input{
+  width:100%;
+  padding:12px;
+  border:none;
+  background:#02040a;
+  color:#fff;
+}
+
+/* ===== CHAT LEVEL COLORS ===== */
+.nick-lvl-1{color:#aaa}
+.nick-lvl-5{color:#3cffb0}
+.nick-lvl-10{color:#4dc3ff}
+.nick-lvl-20{color:#b388ff}
+.nick-lvl-30{color:#ffd54d}
+.nick-lvl-50{
+  color:#ff5252;
+  text-shadow:0 0 12px rgba(255,82,82,.8);
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">DioClicker</div>
+</div>
+
+<div class="app">
+
+<div class="panel">
+  <h2>Прогресс</h2>
+
+  <div class="level">LVL <span id="lvl">1</span></div>
+
+  <div class="bar"><div id="xpbar"></div></div>
+  <div class="stat"><span>XP</span><span><span id="xp">0</span>/<span id="need">100</span></span></div>
+  <div class="stat"><span>Осталось</span><span id="left">100 XP</span></div>
+
+  <div class="click" id="clickBtn" onclick="tap()">TAP</div>
+</div>
+
+<div class="panel">
+  <h2>Прокачка</h2>
+  <div class="stat">XP за клик <button onclick="up('pc',10)">+</button></div>
+  <div class="stat">Пассивный XP <button onclick="up('ps',25)">+</button></div>
+  <div class="stat">Интеллект <button onclick="up('int',30)">+</button></div>
+  <div class="stat">Сила <button onclick="up('str',30)">+</button></div>
+</div>
+
+<div class="panel">
+  <h2>Статистика</h2>
+  <div class="stat">Клики <span id="clicks">0</span></div>
+  <div class="stat">Всего XP <span id="totalxp">0</span></div>
+</div>
+
+</div>
+
+<div class="chat">
+  <div class="chat-top">
+    <input id="nick" placeholder="Ник">
+  </div>
+  <div class="chatlog" id="chatlog"></div>
+  <input class="chat-input" placeholder="Сообщение..." onkeydown="if(event.key==='Enter')send(this)">
+</div>
+
+<script>
+let state = JSON.parse(localStorage.getItem("dioclicker")) || {
+  lvl:1,xp:0,need:100,
+  pc:1,ps:0,int:1,str:1,
+  clicks:0,totalxp:0
+};
+
+/* CORE */
+function tap(){
+  let gain = (state.pc + state.str) * (1 + state.int*0.05);
+  state.xp+=gain;
+  state.totalxp+=gain;
+  state.clicks++;
+  clickBtn.classList.add("pulse");
+  setTimeout(()=>clickBtn.classList.remove("pulse"),300);
+  check();
+}
+
+function check(){
+  while(state.xp>=state.need){
+    state.xp-=state.need;
+    state.lvl++;
+    state.need=Math.floor(state.need*1.4);
+    levelUpFx();
+  }
+  save();render();
+}
+
+function levelUpFx(){
+  document.body.insertAdjacentHTML("beforeend",
+    '<div class="level-flash"></div><div class="level-text">LEVEL UP</div>');
+  if(navigator.vibrate) navigator.vibrate([30,20,30]);
+  setTimeout(()=>document.querySelectorAll(".level-flash,.level-text").forEach(e=>e.remove()),900);
+}
+
+function up(k,c){
+  if(state.xp>=c){
+    state.xp-=c;
+    state[k]++;
+  }
+}
+
+/* CHAT */
+function getNickClass(lvl){
+  if(lvl>=50) return "nick-lvl-50";
+  if(lvl>=30) return "nick-lvl-30";
+  if(lvl>=20) return "nick-lvl-20";
+  if(lvl>=10) return "nick-lvl-10";
+  if(lvl>=5) return "nick-lvl-5";
+  return "nick-lvl-1";
+}
+
+function send(inp){
+  let n=nick.value.trim();
+  if(!n||!inp.value.trim()) return;
+  let chat=JSON.parse(localStorage.getItem("chat"))||[];
+  chat.push({n,l:state.lvl,t:inp.value});
+  localStorage.setItem("chat",JSON.stringify(chat));
+  inp.value="";
+  renderChat();
+}
+
+function renderChat(){
+  let chat=JSON.parse(localStorage.getItem("chat"))||[];
+  chatlog.innerHTML=chat.map(m=>
+    `<div><b class="${getNickClass(m.l)}">${m.n}</b>: ${m.t}</div>`
+  ).join("");
+  chatlog.scrollTop=chatlog.scrollHeight;
+}
+
+/* RENDER */
+function render(){
+  lvl.textContent=state.lvl;
+  xp.textContent=Math.floor(state.xp);
+  need.textContent=state.need;
+  left.textContent=Math.max(0,state.need-Math.floor(state.xp))+" XP";
+  xpbar.style.width=Math.min(100,state.xp/state.need*100)+"%";
+  clicks.textContent=state.clicks;
+  totalxp.textContent=Math.floor(state.totalxp);
+}
+
+function save(){
+  localStorage.setItem("dioclicker",JSON.stringify(state));
+}
+
+setInterval(()=>{
+  state.xp+=state.ps;
+  check();
+},1000);
+
+render();
+renderChat();
+</script>
+
+</body>
+</html>

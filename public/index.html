@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>DioRise • Hytale</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --bg:#0b0f14;
+  --bg2:#0f1622;
+  --panel:rgba(255,255,255,.06);
+  --panel2:rgba(255,255,255,.04);
+  --border:rgba(255,255,255,.08);
+  --accent:#4da3ff;
+  --accent2:#6be6c1;
+  --gold:#f2c94c;
+  --text:#e6edf3;
+  --muted:#8b9bb4;
+}
+
+*{
+  box-sizing:border-box;
+  font-family:Inter,Segoe UI,Arial;
+}
+
+body{
+  margin:0;
+  color:var(--text);
+  background:
+    radial-gradient(900px 500px at 80% -10%,#1b3b6f55,transparent),
+    radial-gradient(700px 400px at 10% 10%,#1b6f5f44,transparent),
+    linear-gradient(180deg,var(--bg),var(--bg2));
+}
+
+/* HEADER */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 24px;
+  background:rgba(0,0,0,.55);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  font-weight:800;
+}
+.header span{
+  margin-left:12px;
+}
+
+/* LEVEL BAR */
+.levelbar{
+  padding:14px 24px;
+}
+.bar{
+  height:10px;
+  background:#070b10;
+  border-radius:6px;
+  overflow:hidden;
+}
+.bar span{
+  display:block;
+  height:100%;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  width:0%;
+}
+
+/* LAYOUT */
+.app{
+  display:grid;
+  grid-template-columns:280px 1fr 280px;
+  gap:18px;
+  padding:18px 24px 120px;
+}
+
+/* PANELS */
+.panel{
+  background:linear-gradient(180deg,var(--panel),var(--panel2));
+  border-radius:18px;
+  padding:14px;
+  border:1px solid var(--border);
+  backdrop-filter:blur(18px);
+}
+
+/* ITEMS */
+.item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(0,0,0,.35);
+  padding:10px 12px;
+  border-radius:12px;
+  margin-bottom:8px;
+  font-size:14px;
+}
+
+/* CENTER */
+.center{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:24px;
+}
+
+.core{
+  width:260px;
+  height:260px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 30%,#7fb7ff,#2b4e7a);
+  box-shadow:
+    0 0 40px #4da3ff55,
+    inset 0 0 40px #ffffff22;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:64px;
+}
+
+.main-btn{
+  background:linear-gradient(180deg,var(--accent),#2b6fc7);
+  color:#fff;
+  padding:20px 80px;
+  font-size:24px;
+  border-radius:40px;
+  border:none;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 10px 30px #4da3ff55;
+  transition:.15s;
+}
+.main-btn:hover{transform:translateY(-2px)}
+
+/* BUTTONS */
+button{
+  background:linear-gradient(180deg,#ffffff,#cfd8e3);
+  border:none;
+  border-radius:10px;
+  font-weight:800;
+  padding:6px 14px;
+  cursor:pointer;
+  color:#111;
+}
+
+/* BOTTOM */
+.bottom{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(18px);
+  border-top:1px solid var(--border);
+  padding:14px 24px;
+  display:flex;
+  gap:12px;
+}
+.bottom .item{
+  min-width:220px;
+  margin:0;
+}
+
+/* FLOAT */
+.float{
+  position:absolute;
+  color:var(--gold);
+  font-weight:900;
+  pointer-events:none;
+  animation:float 1s forwards;
+}
+@keyframes float{
+  from{opacity:1}
+  to{transform:translateY(-60px);opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div>DioRise • Hytale</div>
+  <div>
+    💰 <span id="gold">0</span>
+    ⭐ <span id="level">1</span>
+  </div>
+</div>
+
+<div class="levelbar">
+  Уровень <span id="lvlText">1</span> • Бонус <span id="lvlBonus">+0%</span>
+  <div class="bar"><span id="xpBar"></span></div>
+</div>
+
+<div class="app">
+
+<div class="panel">
+<h4>Характеристики</h4>
+<div class="item">💪 Сила <button onclick="upStat('str')">💰 <span id="c_str"></span></button></div>
+<div class="item">⚡ Ловкость <button onclick="upStat('agi')">💰 <span id="c_agi"></span></button></div>
+<div class="item">🧠 Интеллект <button onclick="upStat('int')">💰 <span id="c_int"></span></button></div>
+<div class="item">🍀 Удача <button onclick="upStat('luck')">💰 <span id="c_luck"></span></button></div>
+</div>
+
+<div class="center">
+<div class="core">💎</div>
+<button class="main-btn" onclick="clickCore(event)">УДАР</button>
+</div>
+
+<div class="panel">
+<h4>Автодобыча</h4>
+<div class="item">Гоблин +1 <button onclick="buyAuto(1)">💰 <span id="c_a1"></span></button></div>
+<div class="item">Рыцарь +5 <button onclick="buyAuto(5)">💰 <span id="c_a5"></span></button></div>
+</div>
+
+</div>
+
+<div class="bottom">
+  <div class="item">Клик +1 <button onclick="buyClick()">💰 <span id="c_click"></span></button></div>
+  <div class="item">Буст +20% <button onclick="buyBoost()">💰 <span id="c_boost"></span></button></div>
+  <div class="item">Сундук <button onclick="openChest()">💰 <span id="c_chest"></span></button></div>
+</div>
+
+<script>
+/* ===== ВЕСЬ ТВОЙ ИСХОДНЫЙ JS БЕЗ ИЗМЕНЕНИЙ ===== */
+let gold=0;
+let level=1;
+let xp=0;
+let xpNeed=100;
+
+let stats={str:1,agi:1,int:1,luck:1};
+
+let prices={
+  str:50,agi:50,int:70,luck:90,
+  auto1:250,auto5:1200,
+  click:300,boost:800,chest:200
+};
+
+let perSec=0;
+
+const bonus=()=>1+(level-1)*0.03;
+
+function save(){
+  localStorage.setItem("diorise_full_restore",JSON.stringify({
+    gold,level,xp,xpNeed,stats,prices,perSec
+  }));
+}
+
+function load(){
+  let d=JSON.parse(localStorage.getItem("diorise_full_restore"));
+  if(!d)return;
+  gold=d.gold||0;
+  level=d.level||1;
+  xp=d.xp||0;
+  xpNeed=d.xpNeed||100;
+  stats=d.stats||stats;
+  prices=d.prices||prices;
+  perSec=d.perSec||0;
+}
+
+function update(){
+  gold=Math.max(0,Math.floor(gold));
+  goldEl.textContent=gold;
+  levelEl.textContent=level;
+  lvlText.textContent=level;
+  lvlBonus.textContent="+"+Math.round((bonus()-1)*100)+"%";
+  xpBar.style.width=Math.min(100,(xp/xpNeed*100))+"%";
+
+  c_str.textContent=Math.floor(prices.str);
+  c_agi.textContent=Math.floor(prices.agi);
+  c_int.textContent=Math.floor(prices.int);
+  c_luck.textContent=Math.floor(prices.luck);
+  c_a1.textContent=Math.floor(prices.auto1);
+  c_a5.textContent=Math.floor(prices.auto5);
+  c_click.textContent=Math.floor(prices.click);
+  c_boost.textContent=Math.floor(prices.boost);
+  c_chest.textContent=Math.floor(prices.chest);
+
+  save();
+}
+
+function gainXP(v){
+  xp+=v;
+  if(xp>=xpNeed){
+    xp-=xpNeed;
+    level++;
+    xpNeed=Math.floor(xpNeed*1.5);
+  }
+}
+
+function clickCore(e){
+  let gain=(stats.str*2)*(1+stats.luck*0.02)*bonus();
+  gold+=gain;
+  gainXP(5+stats.int);
+  spawn(e.clientX,e.clientY,"+"+Math.floor(gain));
+  update();
+}
+
+function upStat(s){
+  if(gold<prices[s])return;
+  gold-=prices[s];
+  stats[s]++;
+  prices[s]*=1.4;
+  update();
+}
+
+function buyAuto(v){
+  let key=v===1?"auto1":"auto5";
+  if(gold<prices[key])return;
+  gold-=prices[key];
+  perSec+=v*(1+stats.agi*0.05);
+  prices[key]*=1.9;
+  update();
+}
+
+function buyClick(){
+  if(gold<prices.click)return;
+  gold-=prices.click;
+  stats.str++;
+  prices.click*=1.6;
+  update();
+}
+
+function buyBoost(){
+  if(gold<prices.boost)return;
+  gold-=prices.boost;
+  stats.int++;
+  prices.boost*=1.7;
+  update();
+}
+
+function openChest(){
+  if(gold<prices.chest)return;
+  gold-=prices.chest;
+  gold+=100+Math.random()*250;
+  gainXP(30);
+  prices.chest*=1.6;
+  update();
+}
+
+function spawn(x,y,t){
+  let f=document.createElement('div');
+  f.className='float';
+  f.style.left=x+'px';
+  f.style.top=y+'px';
+  f.textContent=t;
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),1000);
+}
+
+setInterval(()=>{
+  if(perSec>0){
+    gold+=perSec*bonus();
+    gainXP(2);
+    update();
+  }
+},1000);
+
+const goldEl=document.getElementById('gold');
+const levelEl=document.getElementById('level');
+const lvlText=document.getElementById('lvlText');
+const lvlBonus=document.getElementById('lvlBonus');
+const xpBar=document.getElementById('xpBar');
+
+load();
+update();
+</script>
+
+</body>
+</html>
