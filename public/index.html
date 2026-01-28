@@ -416,6 +416,51 @@ button,.btn,.tab{
 <body>
 
 <style>
+/* ===== 10s INIT LOADER ===== */
+#initLoader{
+ position:fixed;inset:0;z-index:100000;
+ background:radial-gradient(circle at top,#06131c,#02080d);
+ display:flex;align-items:center;justify-content:center;
+ color:#4fc3ff;font-family:monospace;
+}
+#initLoader .box{text-align:center}
+#initLoader .percent{margin-top:10px;font-size:14px}
+.spinner{
+ margin:16px auto;
+ width:48px;height:48px;
+ border:4px solid rgba(79,195,255,.2);
+ border-top-color:#4fc3ff;
+ border-radius:50%;
+ animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+
+<div id="initLoader">
+ <div class="box">
+  <h1>DiaClicker</h1>
+  <div>инициализация системы…</div>
+  <div class="spinner"></div>
+  <div class="percent">0%</div>
+ </div>
+</div>
+
+<script>
+(function(){
+ const loader=document.getElementById("initLoader");
+ const percentEl=loader.querySelector(".percent");
+ let p=0;
+ const iv=setInterval(()=>{
+  p+=Math.floor(Math.random()*7)+1;
+  if(p>=100){p=100;clearInterval(iv);}
+  percentEl.textContent=p+"%";
+ },300);
+ setTimeout(()=>loader.remove(),10000);
+})();
+</script>
+
+
+<style>
 #appLoader{
  position:fixed;inset:0;z-index:99999;
  background:linear-gradient(180deg,#0b2a3a,#05141e);
