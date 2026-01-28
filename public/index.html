@@ -327,8 +327,125 @@
     }
     .link{ color: rgba(92,200,255,.92); text-decoration:none; border-bottom: 1px dashed rgba(92,200,255,.35); }
   </style>
+
+<style>
+/* ===== MOBILE BIG UI DARK ===== */
+:root{
+ --bg:#0e1116;
+ --panel:#161b22;
+ --accent:#f5c542;
+}
+body{background:var(--bg)!important;color:#e6e6e6}
+.card,header.top{background:var(--panel)}
+button,.btn,.tab{
+ font-size:18px!important;
+ padding:14px 18px!important;
+ border-radius:16px!important;
+}
+.target{width:240px;height:240px}
+.target .core{width:100px;height:100px;font-size:22px}
+@media(max-width:768px){
+ .wrap{padding:12px 12px 140px}
+ .grid{grid-template-columns:1fr}
+ .navRow{position:fixed;bottom:0;left:0;right:0;z-index:999}
+ .tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+}
+</style>
+
+
+<style>
+/* ===== COMPACT MOBILE NAV TUNING ===== */
+:root{
+  --accent-blue:#4fc3ff;
+  --accent-blue-soft:#8fdcff;
+}
+@media (max-width:768px){
+  .tabs{
+    grid-template-columns:repeat(4,1fr);
+    gap:6px;
+  }
+  .tab{
+    font-size:12px!important;
+    padding:8px 6px!important;
+    border-radius:12px!important;
+    background:#1a1f26;
+    color:#d6e8ff;
+  }
+  .tab.active{
+    background:linear-gradient(180deg,var(--accent-blue),var(--accent-blue-soft));
+    color:#00121f;
+    box-shadow:0 0 12px rgba(79,195,255,.45);
+  }
+  .navRow{
+    padding:8px 6px 10px;
+  }
+}
+</style>
+
+
+<style>
+/* ===== HACKER LOADER + TAB ANIMATION ===== */
+@keyframes glitch {
+  0% { text-shadow:2px 0 #00eaff,-2px 0 #ff006a; }
+  50% { text-shadow:-2px 0 #00eaff,2px 0 #ff006a; }
+  100% { text-shadow:2px 0 #00eaff,-2px 0 #ff006a; }
+}
+#hackLoader{
+ position:fixed;inset:0;z-index:99999;
+ background:radial-gradient(circle at top,#06131c,#02080d);
+ color:#4fc3ff;
+ display:flex;align-items:center;justify-content:center;
+ font-family:monospace;
+}
+#hackLoader .box{text-align:center}
+#hackLoader h1{animation:glitch 1.2s infinite}
+#hackLoader .bar{width:240px;height:6px;background:#10232f;margin-top:16px}
+#hackLoader .fill{height:100%;width:0;background:#4fc3ff;animation:load 3.5s forwards}
+@keyframes load{to{width:100%}}
+
+.tab-content{
+ animation:fadeSlide .35s ease;
+}
+@keyframes fadeSlide{
+ from{opacity:0;transform:translateY(10px)}
+ to{opacity:1;transform:none}
+}
+</style>
+
 </head>
 <body>
+
+<style>
+#appLoader{
+ position:fixed;inset:0;z-index:99999;
+ background:linear-gradient(180deg,#0b2a3a,#05141e);
+ display:flex;align-items:center;justify-content:center;
+ color:#f5c542;font-family:Arial,sans-serif;
+}
+#appLoader .box{text-align:center;animation:fadeIn 1s ease}
+#appLoader .bar{width:220px;height:8px;background:#1e2f3a;border-radius:6px;overflow:hidden;margin-top:18px}
+#appLoader .fill{height:100%;width:0;background:#f5c542;animation:load 4s ease forwards}
+@keyframes load{to{width:100%}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+</style>
+
+<div id="appLoader">
+ <div class="box">
+  <h2>Запуск DiaClicker…</h2>
+  <p>Подготовка игрового мира</p>
+  <div class="bar"><div class="fill"></div></div>
+ </div>
+</div>
+
+<script>
+window.addEventListener("load",()=>{
+ setTimeout(()=>{
+  const l=document.getElementById("appLoader");
+  if(l) l.remove();
+ },4200);
+});
+</script>
+
   <div class="grain"></div>
 
   <div id="loginBack" class="loginBack">
@@ -1195,5 +1312,105 @@ requestAnimationFrame(loop);
 toast("Готово","Введи ник, чтобы начать.");
 })();
 </script>
+
+<script>
+/* ===== AUTOSAVE + EXTRA CONTENT ===== */
+(function(){
+ function autosave(){
+  if(window.saveGame) saveGame();
+  else if(window.save) save();
+ }
+ setInterval(autosave,120000);
+
+ if(Array.isArray(window.quests)){
+  const n=window.quests.length;
+  window.quests.push(
+   {id:'mq'+(n+1),title:'500 кликов',goal:500,reward:40},
+   {id:'mq'+(n+2),title:'2000 кликов',goal:2000,reward:90},
+   {id:'mq'+(n+3),title:'20k монет',goal:20000,reward:200},
+   {id:'mq'+(n+4),title:'Купить 5 апгрейдов',goal:5,reward:150},
+   {id:'mq'+(n+5),title:'2 престижа',goal:2,reward:400}
+  );
+ }
+
+ if(Array.isArray(window.achievements)){
+  const n=window.achievements.length;
+  window.achievements.push(
+   {id:'ma'+(n+1),title:'Начало пути',desc:'500 кликов'},
+   {id:'ma'+(n+2),title:'Усердие',desc:'2000 кликов'},
+   {id:'ma'+(n+3),title:'Богатство',desc:'20k монет'},
+   {id:'ma'+(n+4),title:'Инвестор',desc:'5 улучшений'},
+   {id:'ma'+(n+5),title:'Перерождение',desc:'2 престижа'}
+  );
+ }
+})();
+</script>
+
+
+<script>
+/* ===== HACKER LOADER + TAB SWITCH ===== */
+document.addEventListener("DOMContentLoaded",()=>{
+ const loader=document.createElement("div");
+ loader.id="hackLoader";
+ loader.innerHTML=`
+  <div class="box">
+   <h1>DiaClicker</h1>
+   <div>инициализация ядра...</div>
+   <div class="bar"><div class="fill"></div></div>
+  </div>`;
+ document.body.appendChild(loader);
+ setTimeout(()=>loader.remove(),3800);
+
+ document.querySelectorAll(".tab").forEach(tab=>{
+  tab.addEventListener("click",()=>{
+    const active=document.querySelector(".tab-content.active");
+    if(active){
+      active.classList.remove("active");
+      active.style.display="none";
+    }
+    const target=document.querySelector(tab.dataset.target);
+    if(target){
+      target.style.display="block";
+      target.classList.add("active","tab-content");
+    }
+  });
+ });
+});
+</script>
+
+
+<script>
+/* ===== AUTOSAVE FIX (2 MIN) + HUMAN TIME ===== */
+(function(){
+  const SAVE_INTERVAL = 120000; // 2 минуты
+  const KEY = "lastAutoSave";
+
+  function doSave(){
+    try{
+      if(typeof saveGame === "function") saveGame();
+      else if(typeof save === "function") save();
+      else if(typeof persist === "function") persist();
+    }catch(e){}
+    localStorage.setItem(KEY, Date.now());
+    updateLabel();
+  }
+
+  function updateLabel(){
+    const el = document.querySelector(".autosave, #autosave");
+    if(!el) return;
+    const t = Number(localStorage.getItem(KEY));
+    if(!t){ el.textContent = "Автосейв: ещё не было"; return; }
+    const min = Math.floor((Date.now()-t)/60000);
+    el.textContent = min<=0
+      ? "Автосейв: только что"
+      : "Автосейв: " + min + " мин назад";
+  }
+
+  setInterval(doSave, SAVE_INTERVAL);
+  setInterval(updateLabel, 10000);
+  updateLabel();
+})();
+</script>
+
 </body>
 </html>
