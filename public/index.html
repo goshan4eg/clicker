@@ -412,6 +412,32 @@ button,.btn,.tab{
 }
 </style>
 
+
+<style>
+.live-wrap{display:flex;gap:8px;align-items:center}
+.live-btn{
+ pointer-events:none;
+ padding:8px 12px;border-radius:999px;
+ font-size:12px;font-weight:800;letter-spacing:.2px;
+ border:1px solid rgba(255,255,255,.18);
+ box-shadow:0 10px 20px rgba(0,0,0,.18);
+}
+.live-btn.red{
+ background:rgba(255,107,125,.18);
+ border-color:rgba(255,107,125,.35);
+ color:#ffd6dc;
+}
+.live-btn.green{
+ background:rgba(103,255,158,.18);
+ border-color:rgba(103,255,158,.35);
+ color:#dfffee;
+}
+.live-dot{
+ width:8px;height:8px;border-radius:50%;
+ background:#67ff9e;box-shadow:0 0 0 4px rgba(103,255,158,.15);
+}
+</style>
+
 </head>
 <body>
 
@@ -559,6 +585,12 @@ window.addEventListener("load",()=>{
         </div>
       </div>
       <div class="rightTop">
+
+<div class="live-wrap">
+  <div class="live-btn red">Живой онлайн</div>
+  <div class="live-btn green"><span class="live-dot"></span>&nbsp;<span id="liveOnline">0</span></div>
+</div>
+
         <div class="pill"><span class="dot" id="onlineDot"></span><span>Игрок: <strong id="nickLabel">—</strong></span></div>
         <button class="btn" id="saveBtn" type="button"><span class="icon">⭳</span> Save</button>
         <button class="btn" id="helpBtn" type="button"><span class="icon">?</span> Help</button>
@@ -1454,6 +1486,21 @@ document.addEventListener("DOMContentLoaded",()=>{
   setInterval(doSave, SAVE_INTERVAL);
   setInterval(updateLabel, 10000);
   updateLabel();
+})();
+</script>
+
+
+<script>
+(function(){
+  function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+  const el=document.getElementById("liveOnline");
+  if(!el) return;
+  let v=rand(7,42);
+  el.textContent=v;
+  setInterval(()=>{
+    v = Math.max(1, v + rand(-2,3));
+    el.textContent=v;
+  }, 2500);
 })();
 </script>
 
